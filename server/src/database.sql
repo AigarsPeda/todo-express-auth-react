@@ -1,13 +1,22 @@
 CREATE DATABASE perntodo;
 
+-- CREATE TABLE todos (
+--   id serial,
+--   user_id int NOT NULL,
+--   description VARCHAR(255),
+--   completed BOOLEAN DEFAULT FALSE,
+--   created_on TIMESTAMP NOT NULL,
+--   PRIMARY KEY (user_id),
+--   CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
+-- );
+
 -- todos table
 CREATE TABLE todos (
-  id serial,
+  id serial PRIMARY KEY,
   user_id int NOT NULL,
   description VARCHAR(255),
   completed BOOLEAN DEFAULT FALSE,
   created_on TIMESTAMP NOT NULL,
-  PRIMARY KEY (user_id),
   CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
 );
 
