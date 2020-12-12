@@ -1,19 +1,22 @@
 import express from "express";
 import cors from "cors";
 import argon2 from "argon2";
+import jwt from "jsonwebtoken";
 import { poll } from "./db";
 import { validLoginUser, validSignupUser } from "./utils/validUser";
+import { RequestWithUser } from "./types";
+import { verifyToken } from "./auth/verifyToken";
+import { SECRET_KEY } from "./constance";
 
 const PORT = 8000;
-
 const app = express();
 
 // MIDDLEWARE //
-app.use(cors());
+app.use(cors() as any);
 app.use(express.json()); // req.body
 
 // ROUTES //
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.json({ message: "Hello" });
 });
 
@@ -23,22 +26,27 @@ app.post("/signup", async (req, res) => {
     const created_on = new Date();
     const { email, password, username } = req.body;
 
-    const hashPassword = await argon2.hash(password);
-
     if (!validSignupUser(email, password, username)) {
       return res.status(400).json({ error: "provide valid data" });
     }
 
+    const hashPassword = await argon2.hash(password);
+
     // "INSERT INTO users (username, email, password, created_on) VALUES($1, $2, $3, $4) RETURNING username, email, created_on, last_login, user_id"
     const newUser = await poll.query(
-      "INSERT INTO users (username, email, password, created_on) VALUES($1, $2, $3, $4) RETURNING *",
+      "INSERT INTO users (username, email, password,created_on) VALUES($1, $2, $3, $4) RETURNING username, email, created_on, last_login, user_id",
       [username.toLowerCase(), email.toLowerCase(), hashPassword, created_on]
     );
 
-    // TODO: jwt?
+    // delete newUser.rows[0].password;
 
-    delete newUser.rows[0].password;
-    return res.status(200).json(newUser.rows[0]);
+    // sign jsonwebtoken
+    const token = jwt.sign({ user: newUser.rows[0] }, SECRET_KEY);
+    // console.log(token);
+    return res.status(200).json({
+      user: newUser.rows[0],
+      token: token
+    });
   } catch (error) {
     console.error("SIGNUP ERROR: ", error.message);
     return res.json({ error: "user name or email already taken" });
@@ -54,57 +62,76 @@ app.get("/login", async (req, res) => {
       return res.status(400).json({ error: "provide valid data" });
     }
 
-    const loginUser = await poll.query("SELECT * FROM users WHERE email = $1", [
-      email.toLowerCase()
-    ]);
+    // find user id DB
+    // "SELECT * FROM users WHERE email = $1"
+    const loginUser = await poll.query(
+      "SELECT *  FROM users WHERE email = $1",
+      [email.toLowerCase()]
+    );
 
     // user not found
     if (!loginUser.rows[0]) {
       return res.status(400).json({ error: "user not found" });
     }
 
-    const valid = await argon2.verify(loginUser.rows[0].password, password);
-
-    // passwords entered and in db does not match
-    if (!valid) {
-      return res.status(400).json({ error: "user not found" });
+    // check password
+    if (await argon2.verify(loginUser.rows[0].password, password)) {
+      // sign jsonwebtoken
+      const token = jwt.sign({ user: loginUser.rows[0] }, SECRET_KEY);
+      // delete password from user
+      delete loginUser.rows[0].password;
+      // return token and new user
+      return res.status(200).json({
+        user: loginUser.rows[0],
+        token: token
+      });
+    } else {
+      // password did not match
+      return res.status(401).json({ error: "wrong credentials" });
     }
-
-    // TODO: jwt? express-session?
-
-    delete loginUser.rows[0].password;
-    return res.status(200).json(loginUser.rows[0]);
   } catch (error) {
     console.error("LOGIN ERROR: ", error.message);
     return res.json({ error: "user name or email already taken" });
   }
 });
 
-// create a todo
-app.post("/todos", async (req, res) => {
-  try {
-    const created_on = new Date();
-    const { description, user_id } = req.body;
-    const newTodo = await poll.query(
-      "INSERT INTO todos (user_id ,description, created_on) VALUES($1, $2, $3) RETURNING *",
-      [user_id, description, created_on]
-    );
+// get all user todos
+app.get("/todos", verifyToken, async (req: RequestWithUser, res) => {
+  // console.log(req.user?.user);
+  if (req.user) {
+    try {
+      const allTodos = await poll.query(
+        "SELECT *  FROM todos WHERE user_id = $1",
+        [req.user.user.user_id]
+      );
+      res.json(allTodos.rows);
+    } catch (error) {
+      console.error(error.message);
+    }
+  } else {
+    res.status(403).json({ error: "no user" });
+  }
+});
 
-    res.json(newTodo.rows[0]);
+// create a todo if log in and header is set
+app.post("/todos", verifyToken, async (req: RequestWithUser, res) => {
+  try {
+    if (req.user) {
+      const created_on = new Date();
+      const { user } = req.user;
+      const { description } = req.body;
+      const newTodo = await poll.query(
+        "INSERT INTO todos (user_id ,description, created_on) VALUES($1, $2, $3) RETURNING *",
+        [user.user_id, description, created_on]
+      );
+      res.json(newTodo.rows[0]);
+    } else {
+      res.status(403).json({ error: "no user" });
+    }
   } catch (error) {
     console.error(error.message);
   }
 });
-
-// get all todo
-// app.get("/todos", async (req, res) => {
-//   try {
-//     const allTodos = await poll.query("SELECT * FROM todo");
-//     res.json(allTodos.rows);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
 
 // get a todo
 app.get("/todos/:id", async (req, res) => {
