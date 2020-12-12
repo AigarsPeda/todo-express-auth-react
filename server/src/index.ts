@@ -26,23 +26,27 @@ app.post("/signup", async (req, res) => {
     const created_on = new Date();
     const { email, password, username } = req.body;
 
+    // validating email, password and user name
     if (!validSignupUser(email, password, username)) {
       return res.status(400).json({ error: "provide valid data" });
     }
 
+    // hash password
     const hashPassword = await argon2.hash(password);
 
-    // "INSERT INTO users (username, email, password, created_on) VALUES($1, $2, $3, $4) RETURNING username, email, created_on, last_login, user_id"
+    // saving user to db and returning new user
+    // without password to return it later
+    // with response
     const newUser = await poll.query(
       "INSERT INTO users (username, email, password,created_on) VALUES($1, $2, $3, $4) RETURNING username, email, created_on, last_login, user_id",
       [username.toLowerCase(), email.toLowerCase(), hashPassword, created_on]
     );
 
-    // delete newUser.rows[0].password;
-
-    // sign jsonwebtoken
+    // sign jsonwebtoken to save it in front
+    // end identify user later
     const token = jwt.sign({ user: newUser.rows[0] }, SECRET_KEY);
-    // console.log(token);
+
+    // returning user and token
     return res.status(200).json({
       user: newUser.rows[0],
       token: token
@@ -58,12 +62,12 @@ app.get("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // validating email and password
     if (!validLoginUser(email, password)) {
       return res.status(400).json({ error: "provide valid data" });
     }
 
-    // find user id DB
-    // "SELECT * FROM users WHERE email = $1"
+    // find user id DB with email
     const loginUser = await poll.query(
       "SELECT *  FROM users WHERE email = $1",
       [email.toLowerCase()]
@@ -75,12 +79,17 @@ app.get("/login", async (req, res) => {
     }
 
     // check password
+    // compare password entered and what is saved in db
     if (await argon2.verify(loginUser.rows[0].password, password)) {
-      // sign jsonwebtoken
+      // sign jsonwebtoken to save it in front
+      // end identify user later
       const token = jwt.sign({ user: loginUser.rows[0] }, SECRET_KEY);
-      // delete password from user
+
+      // delete password from user so it
+      // would not be in response
       delete loginUser.rows[0].password;
-      // return token and new user
+
+      // return token and found user
       return res.status(200).json({
         user: loginUser.rows[0],
         token: token
@@ -91,25 +100,25 @@ app.get("/login", async (req, res) => {
     }
   } catch (error) {
     console.error("LOGIN ERROR: ", error.message);
-    return res.json({ error: "user name or email already taken" });
+    return res.status(503).json({ error: "service unavailable" });
   }
 });
 
 // get all user todos
 app.get("/todos", verifyToken, async (req: RequestWithUser, res) => {
-  // console.log(req.user?.user);
-  if (req.user) {
-    try {
+  try {
+    if (req.user) {
       const allTodos = await poll.query(
         "SELECT *  FROM todos WHERE user_id = $1",
         [req.user.user.user_id]
       );
-      res.json(allTodos.rows);
-    } catch (error) {
-      console.error(error.message);
+      return res.json(allTodos.rows);
+    } else {
+      return res.status(403).json({ error: "no user" });
     }
-  } else {
-    res.status(403).json({ error: "no user" });
+  } catch (error) {
+    console.error(error.message);
+    return res.status(503).json({ error: "service unavailable" });
   }
 });
 
@@ -118,6 +127,7 @@ app.post("/todos", verifyToken, async (req: RequestWithUser, res) => {
   try {
     if (req.user) {
       const created_on = new Date();
+      // user from verifyToken token must be in header
       const { user } = req.user;
       const { description } = req.body;
       const newTodo = await poll.query(
@@ -134,43 +144,68 @@ app.post("/todos", verifyToken, async (req: RequestWithUser, res) => {
 });
 
 // get a todo
-app.get("/todos/:id", async (req, res) => {
+// app.get("/todos/:id", async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const todo = await poll.query("SELECT * FROM todo WHERE todo_id  = $1", [
+//       id
+//     ]);
+//     res.json(todo.rows[0]);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
+
+// update users todo
+app.put("/todos/:id", verifyToken, async (req: RequestWithUser, res) => {
   try {
-    const { id } = req.params;
-    const todo = await poll.query("SELECT * FROM todo WHERE todo_id  = $1", [
-      id
-    ]);
-    res.json(todo.rows[0]);
+    if (req.user) {
+      const { user } = req.user;
+      const { id } = req.params;
+      const { description } = req.body;
+
+      // try to find and update entry
+      const foundTodo = await poll.query(
+        "UPDATE todos SET description = $1 WHERE id = $2 AND user_id = $3",
+        [description, id, user.user_id]
+      );
+
+      // check if something was updated
+      if (foundTodo.rowCount) {
+        res.status(200).json({ message: "Todo was updated!" });
+      } else {
+        res.status(401).json({ error: "forbidden" });
+      }
+    } else {
+      res.status(403).json({ error: "no user" });
+    }
   } catch (error) {
     console.error(error.message);
   }
 });
 
-// update a todo
-app.put("/todos/:id", async (req, res) => {
+// delete users todo
+app.delete("/todos/:id", verifyToken, async (req: RequestWithUser, res) => {
   try {
-    const { id } = req.params;
-    const { description } = req.body;
+    if (req.user) {
+      const { id } = req.params;
+      const { user } = req.user;
 
-    await poll.query("UPDATE todo SET description = $1 WHERE todo_id = $2", [
-      description,
-      id
-    ]);
+      // deleting todo
+      const deletedTodo = await poll.query(
+        "DELETE FROM todos WHERE id = $1 AND user_id = $2",
+        [id, user.user_id]
+      );
 
-    res.json("Todo was updated!");
-  } catch (error) {
-    console.error(error.message);
-  }
-});
-
-// delete a todo
-app.delete("/todos/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    await poll.query("DELETE FROM todo WHERE todo_id = $1", [id]);
-
-    res.json("Todo was deleted!");
+      // checking if todo was found and deleted
+      if (deletedTodo.rowCount) {
+        res.status(200).json({ message: "Todo was deleted!" });
+      } else {
+        res.status(401).json({ error: "forbidden" });
+      }
+    } else {
+      res.status(403).json({ error: "no user" });
+    }
   } catch (error) {
     console.error(error.message);
   }
