@@ -29,3 +29,10 @@ CREATE TABLE users (
 	created_on TIMESTAMP NOT NULL,
   last_login TIMESTAMP 
 );
+
+
+-- TO NOT FORGET
+-- const foundTodo = await poll.query(
+--   "SELECT *  FROM todos WHERE id = $1 AND user_id = $2",
+--   [id, user.user_id]
+-- );
