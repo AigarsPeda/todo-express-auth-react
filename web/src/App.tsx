@@ -1,20 +1,23 @@
 import React from "react";
-import { Switch, Route, BrowserRouter } from "react-router-dom";
-import DashboardPage from "./pages/dashboardPage/DashboardPage";
-import LoginPage from "./pages/loginPage/LoginPage";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { PersistGate } from "redux-persist/integration/react";
+import store, { persistor } from "./redux/store";
+import AppRoutes from "./routes/AppRoutes";
 
 import "./styles.scss";
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <div className="App">
-        <nav>I am nav bar!</nav>
-        <Switch>
-          <Route exact path="/login" component={LoginPage} />
-          <Route exact path="/dashboard" component={DashboardPage} />
-        </Switch>
-      </div>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <div className="App">
+            <nav>I am nav bar!</nav>
+            <AppRoutes />
+          </div>
+        </PersistGate>
+      </Provider>
     </BrowserRouter>
   );
 };
