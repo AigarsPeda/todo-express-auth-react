@@ -2,6 +2,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { PersistGate } from "redux-persist/integration/react";
+import NavBar from "./components/navBar/NavBar";
 import store, { persistor } from "./redux/store";
 import AppRoutes from "./routes/AppRoutes";
 
@@ -13,7 +14,7 @@ const App: React.FC = () => {
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <div className="App">
-            <nav>I am nav bar!</nav>
+            <NavBar />
             <AppRoutes />
           </div>
         </PersistGate>
