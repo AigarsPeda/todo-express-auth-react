@@ -1,5 +1,9 @@
 import { isToken } from "../../helpers/isToken";
-import { AuthenticateActionTypes, AUTHENTICATE_USER } from "../types";
+import {
+  AuthenticateActionTypes,
+  AUTHENTICATE_USER,
+  UNAUTHENTICATED_USER
+} from "../types";
 
 export interface IAuthInitialState {
   isAuthenticated: boolean;
@@ -21,6 +25,8 @@ export default (state = initialState, action: AuthenticateActionTypes) => {
         isAuthenticated: isToken(action.payload),
         token: action.payload
       };
+    case UNAUTHENTICATED_USER:
+      return initialState;
 
     default:
       return state;
