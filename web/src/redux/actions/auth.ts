@@ -1,5 +1,11 @@
 import { IUserLogIn } from "./../../types";
-import { LOGOUT } from "./../types";
+import {
+  CLEAR_DATA,
+  CLEAR_USER_DATA,
+  SET_USER_DATA,
+  UNAUTHENTICATED_USER,
+  UserActionTypes
+} from "./../types";
 import { AUTHENTICATE_USER, AuthenticateActionTypes } from "../types";
 import { singInUser } from "../../services/auth.services";
 
@@ -12,7 +18,7 @@ import { Action } from "redux";
 type AppThunk<ReturnType = any> = ThunkAction<
   ReturnType,
   RootState,
-  AuthenticateActionTypes,
+  AuthenticateActionTypes | UserActionTypes,
   Action<string>
 >;
 
@@ -21,22 +27,31 @@ export const logInUser = (userData: IUserLogIn): AppThunk => async (
   dispatch
 ) => {
   try {
-    const user = await singInUser(userData);
-    console.log("Created User: ", user);
-    const { token } = user;
+    const response = await singInUser(userData);
+    console.log("Created User: ", response);
+    const { token, user } = response;
     // authToken(token);
     dispatch({
       type: AUTHENTICATE_USER,
       payload: token
+    });
+    dispatch({
+      type: SET_USER_DATA,
+      payload: user
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-export const logOut = (): AppThunk => (dispatch) => {
+export const logOutUser = (): AppThunk => (dispatch) => {
   dispatch({
-    type: LOGOUT,
-    payload: null
+    type: CLEAR_DATA
+  });
+  dispatch({
+    type: CLEAR_USER_DATA
+  });
+  dispatch({
+    type: UNAUTHENTICATED_USER
   });
 };
