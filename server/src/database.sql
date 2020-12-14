@@ -15,6 +15,7 @@ CREATE TABLE todos (
   id serial PRIMARY KEY,
   user_id int NOT NULL,
   description VARCHAR(255),
+  tags VARCHAR(255) ARRAY,
   completed BOOLEAN DEFAULT FALSE,
   created_on TIMESTAMP NOT NULL,
   CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (user_id)
