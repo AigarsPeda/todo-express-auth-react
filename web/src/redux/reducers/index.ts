@@ -5,10 +5,12 @@ import { persistReducer } from "redux-persist";
 
 import authReducer, { IAuthInitialState } from "./authReducer";
 import userReducer, { IUserInitialState } from "./userReducer";
+import todosReducer, { ITodosInitialState } from "./todosReducer";
 
 interface IDefaultState {
   auth: IAuthInitialState;
   user: IUserInitialState;
+  todos: ITodosInitialState;
 }
 
 const persistConfig = {
@@ -18,7 +20,8 @@ const persistConfig = {
 
 const appReducers = combineReducers({
   auth: authReducer,
-  user: userReducer
+  user: userReducer,
+  todos: todosReducer
 });
 
 // TO DO - WHAT IS THOSE ANY ?
