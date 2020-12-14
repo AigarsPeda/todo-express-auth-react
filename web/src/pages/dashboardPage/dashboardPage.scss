@@ -1,0 +1,62 @@
+// $card-background-color
+
+.dashboard-page {
+  margin: 0 25px;
+  .event-card {
+    margin: 0 auto;
+    padding: 0;
+
+    li {
+      list-style: none;
+      display: flex;
+      align-items: center;
+
+      input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin: 5px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -o-appearance: none;
+        appearance: none;
+        outline: 2px solid $card-background-color;
+        box-shadow: none;
+        font-size: 2em;
+        margin: 0 15px 0 0;
+        cursor: pointer;
+
+        &:checked {
+          background: #65ffa7;
+          outline: 2px solid $card-background-color;
+          color: $card-background-color;
+        }
+      }
+
+      .event {
+        background-color: $card-background-color;
+        width: 100%;
+        margin: 10px 0;
+        border-radius: 15px;
+        height: 60px;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .event-done {
+        background-color: $card-background-color-done;
+      }
+
+      .event-text {
+        font-weight: 700;
+        font-size: 20px;
+      }
+
+      .event-date {
+        font-size: 14px;
+        font-weight: 600;
+      }
+    }
+  }
+}
