@@ -1,4 +1,4 @@
-import { IUserLogIn } from "./../../types";
+import { IUserLogIn, IUserSignUp } from "./../../types";
 import {
   CLEAR_DATA,
   CLEAR_USER_DATA,
@@ -7,7 +7,7 @@ import {
   UserActionTypes
 } from "./../types";
 import { AUTHENTICATE_USER, AuthenticateActionTypes } from "../types";
-import { singInUser } from "../../services/auth.services";
+import { singInUser, singUpUser } from "../../services/auth.services";
 
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "../reducers";
@@ -21,6 +21,28 @@ type AppThunk<ReturnType = any> = ThunkAction<
   AuthenticateActionTypes | UserActionTypes,
   Action<string>
 >;
+
+// create new user
+export const signUpUser = (userData: IUserSignUp): AppThunk => async (
+  dispatch
+) => {
+  try {
+    const response = await singUpUser(userData);
+    console.log("Created User: ", response);
+    const { token, user } = response;
+    // authToken(token);
+    dispatch({
+      type: AUTHENTICATE_USER,
+      payload: token
+    });
+    dispatch({
+      type: SET_USER_DATA,
+      payload: user
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // log in existing user
 export const logInUser = (userData: IUserLogIn): AppThunk => async (
