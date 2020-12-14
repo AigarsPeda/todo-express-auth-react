@@ -16,4 +16,18 @@ export type IUserLogIn = {
   password: string;
 };
 
+export type IUserSignUp = {
+  email: string;
+  password: string;
+  username: string;
+};
+
 export type IToken = string;
+
+export type ITodo = {
+  id: number;
+  user_id: number;
+  description: string;
+  completed: boolean;
+  created_on: string;
+};
