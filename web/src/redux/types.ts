@@ -1,4 +1,4 @@
-import { IUser } from "./../types";
+import { ITodo, IUser } from "./../types";
 export const AUTHENTICATE_USER = "AUTHENTICATE_USER";
 interface IAuthenticateUserAction {
   type: typeof AUTHENTICATE_USER;
@@ -31,10 +31,16 @@ interface IClearUserDataAction {
 export type UserActionTypes = ISetUserAction | IClearUserDataAction;
 
 // TODO
+export const SET_TODOS_DATA = "SET_TODOS_DATA";
+interface ITodosDataAction {
+  type: typeof SET_TODOS_DATA;
+  payload: ITodo[];
+}
+
 export const CLEAR_DATA = "CLEAR_DATA";
 interface IClearDataAction {
   type: typeof CLEAR_DATA;
   // payload: ScreamType[];
 }
 
-export type SetDataTypes = IClearDataAction;
+export type SetDataTypes = IClearDataAction | ITodosDataAction;
