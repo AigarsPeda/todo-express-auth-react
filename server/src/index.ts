@@ -129,10 +129,10 @@ app.post("/todos", verifyToken, async (req: RequestWithUser, res) => {
       const created_on = new Date();
       // user from verifyToken token must be in header
       const { user } = req.user;
-      const { description } = req.body;
+      const { description, tags } = req.body;
       const newTodo = await poll.query(
-        "INSERT INTO todos (user_id ,description, created_on) VALUES($1, $2, $3) RETURNING *",
-        [user.user_id, description, created_on]
+        "INSERT INTO todos (user_id ,description, created_on, tags) VALUES($1, $2, $3, $4) RETURNING *",
+        [user.user_id, description, created_on, tags]
       );
       res.json(newTodo.rows[0]);
     } else {
