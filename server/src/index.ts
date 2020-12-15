@@ -109,7 +109,7 @@ app.get("/todos", verifyToken, async (req: RequestWithUser, res) => {
   try {
     if (req.user) {
       const allTodos = await poll.query(
-        "SELECT *  FROM todos WHERE user_id = $1",
+        "SELECT *  FROM todos WHERE user_id = $1 ORDER BY created_on ASC",
         [req.user.user.user_id]
       );
       return res.json(allTodos.rows);
@@ -168,6 +168,34 @@ app.put("/todos/:id", verifyToken, async (req: RequestWithUser, res) => {
       const foundTodo = await poll.query(
         "UPDATE todos SET description = $1 WHERE id = $2 AND user_id = $3",
         [description, id, user.user_id]
+      );
+
+      // check if something was updated
+      if (foundTodo.rowCount) {
+        res.status(200).json({ message: "Todo was updated!" });
+      } else {
+        res.status(401).json({ error: "forbidden" });
+      }
+    } else {
+      res.status(403).json({ error: "no user" });
+    }
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// update users todo status
+app.put("/todos/status/:id", verifyToken, async (req: RequestWithUser, res) => {
+  try {
+    if (req.user) {
+      const { user } = req.user;
+      const { id } = req.params;
+      const { completed } = req.body;
+
+      // try to find and update entry
+      const foundTodo = await poll.query(
+        "UPDATE todos SET completed = $1 WHERE id = $2 AND user_id = $3",
+        [completed, id, user.user_id]
       );
 
       // check if something was updated
