@@ -2,6 +2,15 @@
 
 .dashboard-page {
   margin: 0 25px;
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    margin-top: 0;
+  }
+
   .event-card {
     margin: 0 auto;
     padding: 0;
@@ -12,23 +21,22 @@
       align-items: center;
 
       input[type="checkbox"] {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
         margin: 5px;
         -webkit-appearance: none;
         -moz-appearance: none;
         -o-appearance: none;
         appearance: none;
-        outline: 2px solid $card-background-color;
+        border: 2px solid $check-box-border-color;
         box-shadow: none;
         font-size: 2em;
         margin: 0 15px 0 0;
         cursor: pointer;
+        border-radius: 5px;
 
         &:checked {
-          background: #65ffa7;
-          outline: 2px solid $card-background-color;
-          color: $card-background-color;
+          background: $check-box-background-color-done;
         }
       }
 
@@ -37,11 +45,42 @@
         width: 100%;
         margin: 10px 0;
         border-radius: 15px;
-        height: 60px;
+        min-height: 80px;
         padding: 15px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+
+        p {
+          margin: 0;
+        }
+
+        .event-tags {
+          display: flex;
+
+          span {
+            margin: 7px 10px 0 0;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-weight: 700;
+          }
+
+          .event-home {
+            background-color: #ff5f62;
+          }
+
+          .event-fun {
+            background-color: #2dd9ec;
+          }
+
+          .event-work {
+            background-color: #6457ff;
+          }
+        }
+
+        .event-main-section {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+        }
       }
 
       .event-done {
