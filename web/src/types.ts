@@ -30,4 +30,7 @@ export type ITodo = {
   description: string;
   completed: boolean;
   created_on: string;
+  tags: ITag[];
 };
+
+export type ITag = string;
