@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import AddTodo from "../../components/addTodo/AddTodo";
 import { dateFormatted } from "../../helpers/dateFormatted";
 import { getUsersTodos, upDateTodoStatus } from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
@@ -49,39 +50,44 @@ const DashboardPage: React.FC<Props> = (props) => {
 
   return (
     <div className="dashboard-page">
-      <h1>Today's schedule</h1>
-      <h2>{today()}</h2>
-      <ul className="event-card">
-        {todos.length > 0 &&
-          todos.map((todo) => {
-            return (
-              <li key={todo.id}>
-                <input
-                  type="checkbox"
-                  checked={todo.completed}
-                  onChange={(e) => handleChange(e, todo.id)}
-                />
-                <div className={`${todo.completed && "event-done"} event`}>
-                  <div className="event-main-section">
-                    <p className="event-text">{todo.description}</p>
-                    <p className="event-date">
-                      {dateFormatted(todo.created_on)}
-                    </p>
+      <div className="dashboard-schedule">
+        <h1>Today's schedule</h1>
+        <h2>{today()}</h2>
+        <ul className="event-card">
+          {todos.length > 0 &&
+            todos.map((todo) => {
+              return (
+                <li key={todo.id}>
+                  <input
+                    type="checkbox"
+                    checked={todo.completed}
+                    onChange={(e) => handleChange(e, todo.id)}
+                  />
+                  <div className={`${todo.completed && "event-done"} event`}>
+                    <div className="event-main-section">
+                      <p className="event-text">{todo.description}</p>
+                      <p className="event-date">
+                        {dateFormatted(todo.created_on)}
+                      </p>
+                    </div>
+                    <div className="event-tags">
+                      {todo.tags.map((tag, index) => {
+                        return (
+                          <span key={index} className={eventTagsClass(tag)}>
+                            {tag}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </div>
-                  <div className="event-tags">
-                    {todo.tags.map((tag, index) => {
-                      return (
-                        <span key={index} className={eventTagsClass(tag)}>
-                          {tag}
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              </li>
-            );
-          })}
-      </ul>
+                </li>
+              );
+            })}
+        </ul>
+      </div>
+      <div className="dashboard-controls">
+        <AddTodo />
+      </div>
     </div>
   );
 };
