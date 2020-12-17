@@ -6,6 +6,8 @@ $card-background-color-done: #2665fa;
 $check-box-background-color-done: #65ffa7;
 $check-box-border-color: #292e3c;
 
+$accent-color: #9534fc;
+
 * {
   box-sizing: border-box;
 }
@@ -18,8 +20,10 @@ body {
 
 .App {
   max-width: 700px;
+  border-radius: 25px;
   margin: auto;
   background-color: $background-color;
 }
 
 @import "./pages/dashboardPage/dashboardPage.scss";
+@import "./components/addTodo/addTodo.scss";
