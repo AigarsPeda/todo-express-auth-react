@@ -1,101 +1,109 @@
 // $card-background-color
 
 .dashboard-page {
-  margin: 0 25px;
+  .dashboard-schedule {
+    margin: 0 25px;
+    height: 700px;
+    h1 {
+      margin-bottom: 10px;
+    }
 
-  h1 {
-    margin-bottom: 10px;
-  }
+    h2 {
+      margin-top: 0;
+    }
 
-  h2 {
-    margin-top: 0;
-  }
+    .event-card {
+      margin: 0 auto;
+      padding: 0;
 
-  .event-card {
-    margin: 0 auto;
-    padding: 0;
+      li {
+        list-style: none;
+        display: flex;
+        align-items: center;
 
-    li {
-      list-style: none;
-      display: flex;
-      align-items: center;
+        input[type="checkbox"] {
+          width: 20px;
+          height: 20px;
+          margin: 5px;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          -o-appearance: none;
+          appearance: none;
+          border: 2px solid $check-box-border-color;
+          box-shadow: none;
+          font-size: 2em;
+          margin: 0 15px 0 0;
+          cursor: pointer;
+          border-radius: 5px;
 
-      input[type="checkbox"] {
-        width: 20px;
-        height: 20px;
-        margin: 5px;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        -o-appearance: none;
-        appearance: none;
-        border: 2px solid $check-box-border-color;
-        box-shadow: none;
-        font-size: 2em;
-        margin: 0 15px 0 0;
-        cursor: pointer;
-        border-radius: 5px;
-
-        &:checked {
-          background: $check-box-background-color-done;
-        }
-      }
-
-      .event {
-        background-color: $card-background-color;
-        width: 100%;
-        margin: 10px 0;
-        border-radius: 15px;
-        min-height: 80px;
-        padding: 15px;
-
-        p {
-          margin: 0;
-        }
-
-        .event-tags {
-          display: flex;
-
-          span {
-            margin: 7px 10px 0 0;
-            padding: 5px 15px;
-            border-radius: 10px;
-            font-weight: 700;
-          }
-
-          .event-home {
-            background-color: #ff5f62;
-          }
-
-          .event-fun {
-            background-color: #2dd9ec;
-          }
-
-          .event-work {
-            background-color: #6457ff;
+          &:checked {
+            background: $check-box-background-color-done;
           }
         }
 
-        .event-main-section {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        .event {
+          background-color: $card-background-color;
           width: 100%;
+          margin: 10px 0;
+          border-radius: 15px;
+          min-height: 80px;
+          padding: 15px;
+
+          p {
+            margin: 0;
+          }
+
+          .event-tags {
+            display: flex;
+
+            span {
+              margin: 7px 10px 0 0;
+              padding: 5px 15px;
+              border-radius: 10px;
+              font-weight: 700;
+            }
+
+            .event-home {
+              background-color: #ff5f62;
+            }
+
+            .event-fun {
+              background-color: #2dd9ec;
+            }
+
+            .event-work {
+              background-color: #6457ff;
+            }
+          }
+
+          .event-main-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+          }
         }
-      }
 
-      .event-done {
-        background-color: $card-background-color-done;
-      }
+        .event-done {
+          background-color: $card-background-color-done;
+        }
 
-      .event-text {
-        font-weight: 700;
-        font-size: 20px;
-      }
+        .event-text {
+          font-weight: 700;
+          font-size: 20px;
+        }
 
-      .event-date {
-        font-size: 14px;
-        font-weight: 600;
+        .event-date {
+          font-size: 14px;
+          font-weight: 600;
+        }
       }
     }
+  }
+
+  .dashboard-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
