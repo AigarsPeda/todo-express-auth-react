@@ -1,19 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import ExitIcon from "../../icons/ExitIcon";
 import { logOutUser } from "../../redux/actions/auth";
 import { RootState } from "../../redux/reducers";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const NavBar: React.FC<Props> = (props) => {
-  const { isAuthenticated, user, logOutUser } = props;
+  const { isAuthenticated, logOutUser } = props;
   return (
-    <nav>
+    <nav className="nav-bar">
       {isAuthenticated ? (
-        <div>
-          <h1>{user.username}</h1>
-          <button onClick={logOutUser}>Log Out!</button>
+        <div className="nav-bar-controls">
+          <button onClick={logOutUser}>
+            <ExitIcon />
+          </button>
         </div>
       ) : (
         <ul className="links">
@@ -30,8 +32,7 @@ const NavBar: React.FC<Props> = (props) => {
 };
 
 const mapStateToProps = (state: RootState) => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.user.user
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 const mapDispatchToProps = { logOutUser };
