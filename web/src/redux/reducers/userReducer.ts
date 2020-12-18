@@ -2,12 +2,18 @@ import { IUser } from "./../../types";
 import { CLEAR_USER_DATA, SET_USER_DATA, UserActionTypes } from "../types";
 
 export interface IUserInitialState {
-  user: IUser | {};
+  user: IUser;
 }
 
 // Initial State
 const initialState: IUserInitialState = {
-  user: {}
+  user: {
+    created_on: "",
+    email: "",
+    last_login: null,
+    user_id: 0,
+    username: ""
+  }
 };
 
 export default (state = initialState, action: UserActionTypes) => {
