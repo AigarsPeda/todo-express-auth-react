@@ -8,7 +8,7 @@ import { RootState } from "../../redux/reducers";
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const DashboardPage: React.FC<Props> = (props) => {
-  const { todos, token, getUsersTodos, upDateTodoStatus } = props;
+  const { todos, token, user, getUsersTodos, upDateTodoStatus } = props;
 
   useEffect(() => {
     getUsersTodos(token);
@@ -51,7 +51,7 @@ const DashboardPage: React.FC<Props> = (props) => {
   return (
     <div className="dashboard-page">
       <div className="dashboard-schedule">
-        <h1>Today's schedule</h1>
+        <h1>{user.username} - Yours Today's schedule</h1>
         <h2>{today()}</h2>
         <ul className="event-card">
           {todos.length > 0 &&
@@ -94,7 +94,8 @@ const DashboardPage: React.FC<Props> = (props) => {
 
 const mapStateToProps = (state: RootState) => ({
   token: state.auth.token,
-  todos: state.todos.todos
+  todos: state.todos.todos,
+  user: state.user.user
 });
 
 const mapDispatchToProps = { getUsersTodos, upDateTodoStatus };
