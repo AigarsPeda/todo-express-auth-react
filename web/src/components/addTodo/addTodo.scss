@@ -1,4 +1,59 @@
 .add-todo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  input {
+    width: 430px;
+    height: 60px;
+    border-radius: 15px;
+    border: none;
+    background-color: $dark-background-color;
+    padding-left: 15px;
+    font-size: 18px;
+    color: whitesmoke;
+    margin-top: 15px;
+
+    // &::placeholder {
+    //   color: whitesmoke;
+    // }
+  }
+
+  .add-todo-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    label {
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 700;
+      color: whitesmoke;
+      margin-right: 5px;
+    }
+
+    input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin: 5px;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -o-appearance: none;
+      appearance: none;
+      border: 2px solid #7d41ff;
+      box-shadow: none;
+      font-size: 2em;
+      margin: 0 15px 0 0;
+      cursor: pointer;
+      border-radius: 5px;
+
+      &:checked {
+        background: $check-box-background-color-done;
+      }
+    }
+  }
+
   button {
     background-color: $accent-color;
     width: 50px;
@@ -7,6 +62,7 @@
     border: none;
     margin: 12px;
     cursor: pointer;
+    margin-top: 25px;
 
     svg {
       width: 26px;
