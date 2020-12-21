@@ -2,13 +2,25 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import AddTodo from "../../components/addTodo/AddTodo";
 import { dateFormatted } from "../../helpers/dateFormatted";
-import { getUsersTodos, upDateTodoStatus } from "../../redux/actions/todos";
+import DeleteIcon from "../../icons/DeleteIcon";
+import {
+  deleteTodo,
+  getUsersTodos,
+  upDateTodoStatus
+} from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const DashboardPage: React.FC<Props> = (props) => {
-  const { todos, token, user, getUsersTodos, upDateTodoStatus } = props;
+  const {
+    todos,
+    token,
+    user,
+    getUsersTodos,
+    upDateTodoStatus,
+    deleteTodo
+  } = props;
 
   useEffect(() => {
     getUsersTodos(token);
@@ -48,11 +60,17 @@ const DashboardPage: React.FC<Props> = (props) => {
     return `${day} ${date}`;
   };
 
+  const handleDeleteTodo = (id: number) => {
+    deleteTodo(id, token);
+  };
+
   return (
     <div className="dashboard-page">
-      <div className="dashboard-schedule">
+      <div className="dashboard-header">
         <h1>{user.username} - Yours Today's schedule</h1>
         <h2>{today()}</h2>
+      </div>
+      <div className="dashboard-schedule">
         <ul className="event-card">
           {todos.length > 0 &&
             todos.map((todo) => {
@@ -71,13 +89,18 @@ const DashboardPage: React.FC<Props> = (props) => {
                       </p>
                     </div>
                     <div className="event-tags">
-                      {todo.tags.map((tag, index) => {
-                        return (
-                          <span key={index} className={eventTagsClass(tag)}>
-                            {tag}
-                          </span>
-                        );
-                      })}
+                      <div>
+                        {todo.tags.map((tag, index) => {
+                          return (
+                            <span key={index} className={eventTagsClass(tag)}>
+                              {tag}
+                            </span>
+                          );
+                        })}
+                      </div>
+                      <button onClick={() => handleDeleteTodo(todo.id)}>
+                        <DeleteIcon />
+                      </button>
                     </div>
                   </div>
                 </li>
@@ -98,6 +121,6 @@ const mapStateToProps = (state: RootState) => ({
   user: state.user.user
 });
 
-const mapDispatchToProps = { getUsersTodos, upDateTodoStatus };
+const mapDispatchToProps = { getUsersTodos, upDateTodoStatus, deleteTodo };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
