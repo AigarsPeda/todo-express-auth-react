@@ -37,10 +37,26 @@ interface ITodosDataAction {
   payload: ITodo[];
 }
 
+export const ADD_NEW_TODO = "ADD_NEW_TODO";
+interface IAddNewTodoAction {
+  type: typeof ADD_NEW_TODO;
+  payload: ITodo;
+}
+
+export const DELETE_TODO = "DELETE_TODO";
+interface IDeleteTodoAction {
+  type: typeof DELETE_TODO;
+  // payload: ITodo;
+}
+
 export const CLEAR_DATA = "CLEAR_DATA";
 interface IClearDataAction {
   type: typeof CLEAR_DATA;
   // payload: ScreamType[];
 }
 
-export type SetDataTypes = IClearDataAction | ITodosDataAction;
+export type SetDataTypes =
+  | IClearDataAction
+  | ITodosDataAction
+  | IAddNewTodoAction
+  | IDeleteTodoAction;
