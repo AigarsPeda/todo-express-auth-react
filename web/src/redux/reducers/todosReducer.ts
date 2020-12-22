@@ -1,5 +1,11 @@
 import { ITodo } from "./../../types";
-import { CLEAR_DATA, SetDataTypes, SET_TODOS_DATA } from "../types";
+import {
+  ADD_NEW_TODO,
+  CLEAR_DATA,
+  DELETE_TODO,
+  SetDataTypes,
+  SET_TODOS_DATA
+} from "../types";
 
 export interface ITodosInitialState {
   todos: ITodo[];
@@ -20,6 +26,18 @@ export default (state = initialState, action: SetDataTypes) => {
 
     case CLEAR_DATA: {
       return initialState;
+    }
+
+    case ADD_NEW_TODO: {
+      return {
+        ...state
+      };
+    }
+
+    case DELETE_TODO: {
+      return {
+        ...state
+      };
     }
 
     default:
