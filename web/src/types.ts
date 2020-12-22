@@ -34,3 +34,7 @@ export type ITodo = {
 };
 
 export type ITag = string;
+
+export type IAPIMessage = {
+  message: string;
+};
