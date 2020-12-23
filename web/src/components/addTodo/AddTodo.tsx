@@ -11,7 +11,8 @@ const AddTodo: React.FC<Props> = (props) => {
   const [newTodo, setNewTodo] = useState({
     description: ""
   });
-  const tags: string[] = [];
+  const [tags, setTags] = useState<string[]>([]);
+  // let tags: string[] = [];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,22 +32,28 @@ const AddTodo: React.FC<Props> = (props) => {
       ...state,
       description: ""
     }));
+    setTags([]);
   };
 
-  // if (tag === "home") {
-  //   return "event-home";
-  // } else if (tag === "fun") {
-  //   return "event-fun";
-  // } else {
-  //   return "event-work";
-  // }
-
   const handleChangeChk = (e: React.ChangeEvent<HTMLInputElement>) => {
-    tags.push(e.target.value);
+    e.persist();
+    if (e.target.checked) {
+      setTags((sate) => [...sate, e.target.value]);
+    } else {
+      const newArray = tags.filter((tag) => tag !== e.target.value);
+      setTags(newArray);
+    }
+
+    // console.log(e.target.checked);
+  };
+
+  const isChecked = (str: string) => {
+    return tags.includes(str);
   };
 
   return (
     <div className="add-todo">
+      {console.log(tags)}
       <input
         type="text"
         name="description"
@@ -56,11 +63,26 @@ const AddTodo: React.FC<Props> = (props) => {
       />
       <div className="add-todo-checkbox">
         <label htmlFor="home">Home</label>
-        <input type="checkbox" onChange={handleChangeChk} value="home" />
+        <input
+          type="checkbox"
+          checked={isChecked("home")}
+          onChange={handleChangeChk}
+          value="home"
+        />
         <label htmlFor="fun">Fun</label>
-        <input type="checkbox" onChange={handleChangeChk} value="fun" />
+        <input
+          type="checkbox"
+          checked={isChecked("fun")}
+          onChange={handleChangeChk}
+          value="fun"
+        />
         <label htmlFor="work">Work</label>
-        <input type="checkbox" onChange={handleChangeChk} value="work" />
+        <input
+          type="checkbox"
+          checked={isChecked("work")}
+          onChange={handleChangeChk}
+          value="work"
+        />
       </div>
 
       <button
