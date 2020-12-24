@@ -1,9 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
-import ExitIcon from "../../icons/ExitIcon";
-import { logOutUser } from "../../redux/actions/auth";
 import { RootState } from "../../redux/reducers";
+import { logOutUser } from "../../redux/actions/auth";
+import ExitIcon from "../../icons/ExitIcon";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -17,16 +16,7 @@ const NavBar: React.FC<Props> = (props) => {
             <ExitIcon />
           </button>
         </div>
-      ) : (
-        <ul className="links">
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/signup">Sign Up</Link>
-          </li>
-        </ul>
-      )}
+      ) : null}
     </nav>
   );
 };
