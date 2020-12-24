@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import AddTodo from "../../components/addTodo/AddTodo";
 import { dateFormatted } from "../../helpers/dateFormatted";
@@ -9,6 +9,7 @@ import {
   upDateTodoStatus
 } from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
+import { ITodo } from "../../types";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -21,6 +22,8 @@ const DashboardPage: React.FC<Props> = (props) => {
     upDateTodoStatus,
     deleteTodo
   } = props;
+
+  const [tag, setTag] = useState("all");
 
   useEffect(() => {
     getUsersTodos(token);
@@ -60,8 +63,33 @@ const DashboardPage: React.FC<Props> = (props) => {
     return `${day} ${date}`;
   };
 
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setTag(e.target.value);
+  };
+
   const handleDeleteTodo = (id: number) => {
     deleteTodo(id, token);
+  };
+
+  const filterTodos = (arr: ITodo[]) => {
+    if (tag === "all") {
+      return arr;
+    } else {
+      return arr.filter((todo) => {
+        return todo.tags.includes(tag);
+      });
+    }
+  };
+  // const filterArray = todos.filter((todo) => {
+  //   return todo.tags.includes(tag);
+  // });
+
+  const isSelected = (str: string) => {
+    if (tag === str) {
+      return true;
+    } else {
+      return undefined;
+    }
   };
 
   return (
@@ -69,11 +97,25 @@ const DashboardPage: React.FC<Props> = (props) => {
       <div className="dashboard-header">
         <h1>{user.username} - Yours Today's schedule</h1>
         <h2>{today()}</h2>
+        <select name="tags" id="tags" onChange={handleSelectChange}>
+          <option value="all" selected={isSelected("all")}>
+            All
+          </option>
+          <option value="home" selected={isSelected("home")}>
+            Home
+          </option>
+          <option value="fun" selected={isSelected("fun")}>
+            Fun
+          </option>
+          <option value="work" selected={isSelected("work")}>
+            Work
+          </option>
+        </select>
       </div>
       <div className="dashboard-schedule">
         <ul className="event-card">
           {todos.length > 0 &&
-            todos.map((todo) => {
+            filterTodos(todos).map((todo) => {
               return (
                 <li key={todo.id}>
                   <input
@@ -92,7 +134,11 @@ const DashboardPage: React.FC<Props> = (props) => {
                       <div>
                         {todo.tags.map((tag, index) => {
                           return (
-                            <span key={index} className={eventTagsClass(tag)}>
+                            <span
+                              key={index}
+                              className={eventTagsClass(tag)}
+                              onClick={() => setTag(tag)}
+                            >
                               {tag}
                             </span>
                           );
