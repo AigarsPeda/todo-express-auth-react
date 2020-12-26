@@ -99,19 +99,11 @@ const DashboardPage: React.FC<Props> = (props) => {
       <div className="dashboard-header">
         <h1>{user.username} - Yours Today's schedule</h1>
         <h2>{today()}</h2>
-        <select name="tags" id="tags" onChange={handleSelectChange}>
-          <option value="all" selected={isSelected("all")}>
-            All
-          </option>
-          <option value="home" selected={isSelected("home")}>
-            Home
-          </option>
-          <option value="fun" selected={isSelected("fun")}>
-            Fun
-          </option>
-          <option value="work" selected={isSelected("work")}>
-            Work
-          </option>
+        <select name="tags" id="tags" onChange={handleSelectChange} value={tag}>
+          <option value="all">All</option>
+          <option value="home">Home</option>
+          <option value="fun">Fun</option>
+          <option value="work">Work</option>
         </select>
       </div>
       <div className="dashboard-schedule">
