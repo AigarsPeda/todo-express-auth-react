@@ -157,7 +157,7 @@ app.post("/todos", verifyToken, async (req: RequestWithUser, res) => {
 // });
 
 // update users todo
-app.put("/todos/:id", verifyToken, async (req: RequestWithUser, res) => {
+app.put("/todo/:id", verifyToken, async (req: RequestWithUser, res) => {
   try {
     if (req.user) {
       const { user } = req.user;
