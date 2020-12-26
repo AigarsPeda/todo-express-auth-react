@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 import AddTodo from "../../components/addTodo/AddTodo";
 import { dateFormatted } from "../../helpers/dateFormatted";
 import DeleteIcon from "../../icons/DeleteIcon";
+import EditIcon from "../../icons/EditIcon";
 import {
   deleteTodo,
   getUsersTodos,
@@ -144,9 +146,16 @@ const DashboardPage: React.FC<Props> = (props) => {
                           );
                         })}
                       </div>
-                      <button onClick={() => handleDeleteTodo(todo.id)}>
-                        <DeleteIcon />
-                      </button>
+                      <div>
+                        <Link to={`/todo/${todo.id}`}>
+                          <button>
+                            <EditIcon />
+                          </button>
+                        </Link>
+                        <button onClick={() => handleDeleteTodo(todo.id)}>
+                          <DeleteIcon />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </li>
