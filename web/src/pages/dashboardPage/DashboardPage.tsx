@@ -86,13 +86,13 @@ const DashboardPage: React.FC<Props> = (props) => {
   //   return todo.tags.includes(tag);
   // });
 
-  const isSelected = (str: string) => {
-    if (tag === str) {
-      return true;
-    } else {
-      return undefined;
-    }
-  };
+  // const isSelected = (str: string) => {
+  //   if (tag === str) {
+  //     return true;
+  //   } else {
+  //     return undefined;
+  //   }
+  // };
 
   return (
     <div className="dashboard-page">
