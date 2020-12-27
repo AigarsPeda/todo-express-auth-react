@@ -53,7 +53,6 @@ const AddTodo: React.FC<Props> = (props) => {
 
   return (
     <div className="add-todo">
-      {console.log(tags)}
       <input
         type="text"
         name="description"
