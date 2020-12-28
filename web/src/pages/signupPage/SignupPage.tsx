@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Redirect, RouteChildrenProps } from "react-router-dom";
+import { Link, Redirect, RouteChildrenProps } from "react-router-dom";
+import Headline from "../../components/headline/Header";
 import { signUpUser } from "../../redux/actions/auth";
 import { RootState } from "../../redux/reducers";
 
@@ -35,35 +36,36 @@ const SignupPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <div>
-      <h1>Sign Up Page</h1>
+    <div className="signup-page">
+      <Headline />
       <form onSubmit={handleSubmit}>
-        <label>Username</label>
         <input
           type="text"
           value={user.username}
           onChange={handleChange}
           name="username"
           autoComplete="on"
+          placeholder="Username"
         />
-        <label>E-mail</label>
         <input
           type="email"
           value={user.email}
           onChange={handleChange}
           name="email"
           autoComplete="on"
+          placeholder="E-mail"
         />
-        <label>Password</label>
         <input
           type="password"
           value={user.password}
           onChange={handleChange}
           name="password"
           autoComplete="off"
+          placeholder="Password"
         />
         <button type="submit">Submit</button>
       </form>
+      <Link to="/login">Have a account?</Link>
     </div>
   );
 };
