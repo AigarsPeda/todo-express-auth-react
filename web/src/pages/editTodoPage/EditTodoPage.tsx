@@ -14,31 +14,39 @@ const EditTodoPage: React.FC<Props> = (props) => {
   const { todos } = props;
   const { id } = useParams<IParamTypes>();
   const history = useHistory();
-  const [todo, setTodo] = useState<ITodo>();
-  const [description, setDescription] = useState("");
+  const [todo, setTodo] = useState<ITodo>({
+    completed: false,
+    created_on: "",
+    description: "",
+    id: 0,
+    tags: [],
+    user_id: 0
+  });
 
   useEffect(() => {
     const foundTodo = todos.find((t) => t.id === parseInt(id));
-    setTodo(foundTodo);
     if (foundTodo) {
-      setDescription(foundTodo.description);
+      setTodo(foundTodo);
     }
   }, [todos, id]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setDescription(value);
+    const { name, value } = e.target;
+    setTodo((state) => ({
+      ...state,
+      [name]: value
+    }));
   };
 
   return (
     <div className="edit-todo-page">
       <button onClick={() => history.goBack()}>Back</button>
       {console.log(todo)}
-      {console.log(description)}
+      {console.log(todo.description)}
       <input
         type="text"
         name="description"
-        value={description}
+        value={todo.description}
         onChange={handleChange}
         placeholder="Task Title..."
       />
