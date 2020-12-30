@@ -23,8 +23,6 @@ type AppThunk<ReturnType = any> = ThunkAction<
 export const getUsersTodos = (token: string): AppThunk => async (dispatch) => {
   try {
     const response = await getTodos(token);
-    // console.log(getUsersTodos, response);
-    // authToken(token);
     dispatch({
       type: SET_TODOS_DATA,
       payload: response
