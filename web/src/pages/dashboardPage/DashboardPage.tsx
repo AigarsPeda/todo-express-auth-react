@@ -14,6 +14,7 @@ import DeleteIcon from "../../icons/DeleteIcon";
 import EditIcon from "../../icons/EditIcon";
 
 import AddTodo from "../../components/addTodo/AddTodo";
+import { today } from "../../helpers/today";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -50,23 +51,6 @@ const DashboardPage: React.FC<Props> = (props) => {
     } else {
       return "event-work";
     }
-  };
-
-  const today = () => {
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday"
-    ];
-    const d = new Date();
-    const day = days[d.getDay()];
-    const date = d.getDate();
-
-    return `${day} ${date}`;
   };
 
   const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
