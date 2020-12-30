@@ -1,6 +1,5 @@
 export const dateFormatted = (date: string) => {
   const d = new Date(date);
-  // return d.toLocaleString();
 
   let month = String(d.getMonth() + 1);
   let day = String(d.getDate());
