@@ -61,6 +61,10 @@ const EditTodoPage: React.FC<Props> = (props) => {
     }
   };
 
+  const firstLetterUpper = (str: string) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
+
   return (
     <div className="edit-todo-page">
       {console.log(todo.tags)}
@@ -73,27 +77,19 @@ const EditTodoPage: React.FC<Props> = (props) => {
         placeholder="Task Title..."
       />
       <div className="edit-todo-checkbox-container">
-        <label htmlFor="home">Home</label>
-        <input
-          type="checkbox"
-          checked={isChecked("home")}
-          onChange={handleChangeChk}
-          value="home"
-        />
-        <label htmlFor="fun">Fun</label>
-        <input
-          type="checkbox"
-          checked={isChecked("fun")}
-          onChange={handleChangeChk}
-          value="fun"
-        />
-        <label htmlFor="work">Work</label>
-        <input
-          type="checkbox"
-          checked={isChecked("work")}
-          onChange={handleChangeChk}
-          value="work"
-        />
+        {checkboxTags.map((tag, index) => {
+          return (
+            <div key={index}>
+              <label htmlFor={tag}>{firstLetterUpper(tag)}</label>
+              <input
+                type="checkbox"
+                checked={isChecked(tag)}
+                onChange={handleChangeChk}
+                value={tag}
+              />
+            </div>
+          );
+        })}
       </div>
       <button onClick={() => history.goBack()}>
         <BackIcon /> Back
