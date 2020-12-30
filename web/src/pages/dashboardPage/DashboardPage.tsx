@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import AddTodo from "../../components/addTodo/AddTodo";
-import { dateFormatted } from "../../helpers/dateFormatted";
-import DeleteIcon from "../../icons/DeleteIcon";
-import EditIcon from "../../icons/EditIcon";
 import {
   deleteTodo,
   getUsersTodos,
   upDateTodoStatus
 } from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
+import { dateFormatted } from "../../helpers/dateFormatted";
 import { ITodo } from "../../types";
 
+import DeleteIcon from "../../icons/DeleteIcon";
+import EditIcon from "../../icons/EditIcon";
+
+import AddTodo from "../../components/addTodo/AddTodo";
+
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
+
+const optionTags = ["all", "home", "fun", "work"];
 
 const DashboardPage: React.FC<Props> = (props) => {
   const {
@@ -82,8 +86,6 @@ const DashboardPage: React.FC<Props> = (props) => {
       });
     }
   };
-
-  const optionTags = ["all", "home", "fun", "work"];
 
   return (
     <div className="dashboard-page">
