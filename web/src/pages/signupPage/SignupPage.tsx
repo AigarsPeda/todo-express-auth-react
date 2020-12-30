@@ -27,7 +27,6 @@ const SignupPage: React.FC<Props> = (props) => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(user);
     signUpUser(user);
   };
 
