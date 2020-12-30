@@ -83,6 +83,8 @@ const DashboardPage: React.FC<Props> = (props) => {
     }
   };
 
+  const optionTags = ["all", "home", "fun", "work"];
+
   return (
     <div className="dashboard-page">
       <div className="dashboard-header">
@@ -90,10 +92,13 @@ const DashboardPage: React.FC<Props> = (props) => {
 
         <h2>{today()}</h2>
         <select name="tags" id="tags" onChange={handleSelectChange} value={tag}>
-          <option value="all">All</option>
-          <option value="home">Home</option>
-          <option value="fun">Fun</option>
-          <option value="work">Work</option>
+          {optionTags.map((opt, index) => {
+            return (
+              <option value={opt} key={index}>
+                {opt}
+              </option>
+            );
+          })}
         </select>
       </div>
       <div className="dashboard-schedule">
