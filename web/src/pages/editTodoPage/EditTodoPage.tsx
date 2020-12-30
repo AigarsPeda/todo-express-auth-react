@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import BackIcon from "../../icons/BackIcon";
+import { firstLetterUpper } from "../../helpers/firstLetterUpper";
 import { RootState } from "../../redux/reducers";
 import { ITodo } from "../../types";
+
+import BackIcon from "../../icons/BackIcon";
 
 interface IParamTypes {
   id: string;
@@ -59,10 +61,6 @@ const EditTodoPage: React.FC<Props> = (props) => {
         tags: newArray
       }));
     }
-  };
-
-  const firstLetterUpper = (str: string) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   return (
