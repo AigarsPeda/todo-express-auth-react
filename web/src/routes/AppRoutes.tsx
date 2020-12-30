@@ -10,6 +10,7 @@ import AuthRoute from "../utils/AuthRoute";
 import DashboardPage from "../pages/dashboardPage/DashboardPage";
 import LoginPage from "../pages/loginPage/LoginPage";
 import SignupPage from "../pages/signupPage/SignupPage";
+import EditTodoPage from "../pages/editTodoPage/EditTodoPage";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
@@ -28,6 +29,7 @@ const AppRoutes: React.FC<Props> = (props) => {
       <AuthRoute exact path="/" component={DashboardPage} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/signup" component={SignupPage} />
+      <Route exact path="/todo/:id" component={EditTodoPage} />
     </Switch>
   );
 };
