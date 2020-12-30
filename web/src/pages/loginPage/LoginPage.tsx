@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, RouteChildrenProps } from "react-router-dom";
-import Headline from "../../components/headline/Header";
 import { logInUser } from "../../redux/actions/auth";
 import { RootState } from "../../redux/reducers";
+
+import Headline from "../../components/headline/Header";
 
 type Props = ReturnType<typeof mapStateToProps> &
   typeof mapDispatchToProps &
