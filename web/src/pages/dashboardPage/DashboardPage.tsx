@@ -82,17 +82,6 @@ const DashboardPage: React.FC<Props> = (props) => {
       });
     }
   };
-  // const filterArray = todos.filter((todo) => {
-  //   return todo.tags.includes(tag);
-  // });
-
-  // const isSelected = (str: string) => {
-  //   if (tag === str) {
-  //     return true;
-  //   } else {
-  //     return undefined;
-  //   }
-  // };
 
   return (
     <div className="dashboard-page">
