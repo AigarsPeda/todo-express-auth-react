@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import AddIcon from "../../icons/AddIcon";
+import { firstLetterUpper } from "../../helpers/firstLetterUpper";
 import { addNewTodo } from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
 
+import AddIcon from "../../icons/AddIcon";
+
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
+
+const checkboxTags = ["work", "home", "fun"];
 
 const AddTodo: React.FC<Props> = (props) => {
   const { token, addNewTodo } = props;
@@ -12,7 +16,6 @@ const AddTodo: React.FC<Props> = (props) => {
     description: ""
   });
   const [tags, setTags] = useState<string[]>([]);
-  // let tags: string[] = [];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -43,8 +46,6 @@ const AddTodo: React.FC<Props> = (props) => {
       const newArray = tags.filter((tag) => tag !== e.target.value);
       setTags(newArray);
     }
-
-    // console.log(e.target.checked);
   };
 
   const isChecked = (str: string) => {
@@ -61,29 +62,22 @@ const AddTodo: React.FC<Props> = (props) => {
         placeholder="Task Title..."
       />
       <div className="add-todo-checkbox">
-        <label htmlFor="home">Home</label>
-        <input
-          type="checkbox"
-          checked={isChecked("home")}
-          onChange={handleChangeChk}
-          value="home"
-        />
-        <label htmlFor="fun">Fun</label>
-        <input
-          type="checkbox"
-          checked={isChecked("fun")}
-          onChange={handleChangeChk}
-          value="fun"
-        />
-        <label htmlFor="work">Work</label>
-        <input
-          type="checkbox"
-          checked={isChecked("work")}
-          onChange={handleChangeChk}
-          value="work"
-        />
+        {checkboxTags.map((checkboxTag, index) => {
+          return (
+            <div key={index}>
+              <label htmlFor={checkboxTag}>
+                {firstLetterUpper(checkboxTag)}
+              </label>
+              <input
+                type="checkbox"
+                checked={isChecked(checkboxTag)}
+                onChange={handleChangeChk}
+                value={checkboxTag}
+              />
+            </div>
+          );
+        })}
       </div>
-
       <button
         onClick={handleClick}
         disabled={newTodo.description.trim() === "" ? true : false}
