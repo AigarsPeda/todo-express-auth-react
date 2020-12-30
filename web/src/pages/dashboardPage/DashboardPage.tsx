@@ -89,7 +89,6 @@ const DashboardPage: React.FC<Props> = (props) => {
     <div className="dashboard-page">
       <div className="dashboard-header">
         {user.username && <h1>{user.username} - Yours Today's schedule</h1>}
-
         <h2>{today()}</h2>
         <select name="tags" id="tags" onChange={handleSelectChange} value={tag}>
           {optionTags.map((opt, index) => {
