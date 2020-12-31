@@ -1,9 +1,29 @@
 .nav-bar {
   .nav-bar-controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    // align-items: center;
 
-    button {
+    .nav-bar-back-button {
+      background: transparent;
+      border: none;
+      color: #7d41ff;
+      font-size: 20px;
+      letter-spacing: 0.9px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      outline: none;
+      margin-left: 15px;
+      margin-top: 25px;
+
+      svg {
+        width: 35px;
+        fill: #7d41ff;
+      }
+    }
+
+    .nav-bar-exit-button {
       background: transparent;
       border: none;
       margin-right: 15px;
@@ -11,6 +31,7 @@
       svg {
         width: 30px;
         height: 30px;
+        fill: #7d41ff;
       }
     }
   }
