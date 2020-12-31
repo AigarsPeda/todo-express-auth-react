@@ -2,7 +2,8 @@ import {
   SET_TODOS_DATA,
   SetDataTypes,
   UPDATE_TODO,
-  ADD_NEW_TODO
+  ADD_NEW_TODO,
+  DELETE_TODO
 } from "./../types";
 
 import { ThunkAction } from "redux-thunk";
@@ -94,7 +95,11 @@ export const deleteTodo = (id: number, token: string): AppThunk => async (
   try {
     const response = await removeTodo(id, token);
     console.log(response);
-    dispatch(getUsersTodos(token));
+    dispatch({
+      type: DELETE_TODO,
+      payload: id
+    });
+    // dispatch(getUsersTodos(token));
   } catch (error) {
     console.log(error);
   }
