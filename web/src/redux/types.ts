@@ -46,7 +46,13 @@ interface IAddNewTodoAction {
 export const DELETE_TODO = "DELETE_TODO";
 interface IDeleteTodoAction {
   type: typeof DELETE_TODO;
-  // payload: ITodo;
+  payload: number;
+}
+
+export const UPDATE_TODO = "UPDATE_TODO";
+interface IUpdateTodoAction {
+  type: typeof UPDATE_TODO;
+  payload: ITodo;
 }
 
 export const CLEAR_DATA = "CLEAR_DATA";
@@ -59,4 +65,5 @@ export type SetDataTypes =
   | IClearDataAction
   | ITodosDataAction
   | IAddNewTodoAction
-  | IDeleteTodoAction;
+  | IDeleteTodoAction
+  | IUpdateTodoAction;
