@@ -44,7 +44,8 @@ export default (state = initialState, action: SetDataTypes) => {
 
     case DELETE_TODO: {
       return {
-        ...state
+        ...state,
+        todos: state.todos.filter((todo) => todo.id !== action.payload)
       };
     }
 
