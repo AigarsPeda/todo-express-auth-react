@@ -92,7 +92,8 @@ export const deleteTodo = (id: number, token: string): AppThunk => async (
   dispatch
 ) => {
   try {
-    await removeTodo(id, token);
+    const response = await removeTodo(id, token);
+    console.log(response);
     dispatch(getUsersTodos(token));
   } catch (error) {
     console.log(error);
