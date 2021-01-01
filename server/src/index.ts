@@ -162,12 +162,12 @@ app.put("/todo/:id", verifyToken, async (req: RequestWithUser, res) => {
     if (req.user) {
       const { user } = req.user;
       const { id } = req.params;
-      const { description } = req.body;
+      const { description, tags } = req.body;
 
       // try to find and update entry
       const foundTodo = await poll.query(
-        "UPDATE todos SET description = $1 WHERE id = $2 AND user_id = $3 RETURNING *",
-        [description, parseInt(id), user.user_id]
+        "UPDATE todos SET description = $1, tags = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
+        [description, tags, parseInt(id), user.user_id]
       );
 
       // console.log(foundTodo.rows[0]);
