@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import {
   deleteTodo,
   getUsersTodos,
-  upDateTodoStatus
+  UpdateTodoStatus
 } from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
 import { dateFormatted } from "../../helpers/dateFormatted";
@@ -26,7 +26,7 @@ const DashboardPage: React.FC<Props> = (props) => {
     token,
     user,
     getUsersTodos,
-    upDateTodoStatus,
+    UpdateTodoStatus,
     deleteTodo
   } = props;
 
@@ -40,7 +40,7 @@ const DashboardPage: React.FC<Props> = (props) => {
     e: React.ChangeEvent<HTMLInputElement>,
     todosId: number
   ) => {
-    upDateTodoStatus(e.target.checked, token, todosId);
+    UpdateTodoStatus(e.target.checked, token, todosId);
   };
 
   const eventTagsClass = (tag: string) => {
@@ -148,6 +148,6 @@ const mapStateToProps = (state: RootState) => ({
   user: state.user.user
 });
 
-const mapDispatchToProps = { getUsersTodos, upDateTodoStatus, deleteTodo };
+const mapDispatchToProps = { getUsersTodos, UpdateTodoStatus, deleteTodo };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DashboardPage);
