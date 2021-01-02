@@ -5,7 +5,7 @@ import { firstLetterUpper } from "../../helpers/firstLetterUpper";
 import { RootState } from "../../redux/reducers";
 import { ITodo } from "../../types";
 
-import BackIcon from "../../icons/BackIcon";
+import { updateTodo } from "../../redux/actions/todos";
 
 interface IParamTypes {
   id: string;
@@ -16,9 +16,10 @@ const checkboxTags = ["work", "home", "fun"];
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
 
 const EditTodoPage: React.FC<Props> = (props) => {
-  const { todos } = props;
+  const { todos, token, updateTodo } = props;
   const { id } = useParams<IParamTypes>();
   const history = useHistory();
+
   const [todo, setTodo] = useState<ITodo>({
     completed: false,
     created_on: "",
@@ -63,10 +64,16 @@ const EditTodoPage: React.FC<Props> = (props) => {
     }
   };
 
+  const handleSubmit = () => {
+    updateTodo(todo, token, id);
+    history.push("/");
+  };
+
   return (
     <div className="edit-todo-page">
       {console.log(todo.tags)}
       {console.log(todo.description)}
+      {console.log(token)}
       <input
         type="text"
         name="description"
@@ -89,17 +96,19 @@ const EditTodoPage: React.FC<Props> = (props) => {
           );
         })}
       </div>
-      <button onClick={() => history.goBack()}>
+      <button onClick={handleSubmit}>Save</button>
+      {/* <button onClick={() => history.goBack()}>
         <BackIcon /> Back
-      </button>
+      </button> */}
     </div>
   );
 };
 
 const mapStateToProps = (state: RootState) => ({
-  todos: state.todos.todos
+  todos: state.todos.todos,
+  token: state.auth.token
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { updateTodo };
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditTodoPage);
