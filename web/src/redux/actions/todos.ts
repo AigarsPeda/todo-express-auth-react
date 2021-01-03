@@ -1,9 +1,11 @@
+import { ITodo } from "./../../types";
 import {
   SET_TODOS_DATA,
   SetDataTypes,
   UPDATE_TODO,
   ADD_NEW_TODO,
-  DELETE_TODO
+  DELETE_TODO,
+  UPDATE_TODO_STATUS
 } from "./../types";
 
 import { ThunkAction } from "redux-thunk";
@@ -39,14 +41,19 @@ export const getUsersTodos = (token: string): AppThunk => async (dispatch) => {
   }
 };
 
-export const upDateTodoStatus = (
+export const UpdateTodoStatus = (
   status: boolean,
   token: string,
-  todosId: number
+  id: number
 ): AppThunk => async (dispatch) => {
   try {
-    await changeStatus(status, token, todosId);
-    dispatch(getUsersTodos(token));
+    const response = await changeStatus(status, token, id);
+    console.log(response);
+    dispatch({
+      type: UPDATE_TODO_STATUS,
+      payload: id
+    });
+    // dispatch(getUsersTodos(token));
   } catch (error) {
     console.log(error);
   }
@@ -73,13 +80,14 @@ export const addNewTodo = (
 };
 
 export const updateTodo = (
-  description: string,
+  todo: ITodo,
   token: string,
   id: string
 ): AppThunk => async (dispatch) => {
+  const { description, tags } = todo;
   try {
-    const response = await changeTodoDescription(description, token, id);
-
+    const response = await changeTodoDescription(description, tags, token, id);
+    console.log(response);
     dispatch({
       type: UPDATE_TODO,
       payload: response
