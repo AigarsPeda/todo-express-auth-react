@@ -1,0 +1,27 @@
+.user-profile-page {
+  padding: 60px 60px 0 60px;
+  display: flex;
+  flex-direction: column;
+
+  .user-name {
+    color: #ff5f62;
+
+    p {
+      font-size: 24px;
+    }
+  }
+
+  label {
+    color: #7d41ff;
+    margin-top: 10px;
+    font-size: 18px;
+
+    p {
+      display: inline;
+      margin-left: 15px;
+      font-size: 18px;
+      letter-spacing: 0.9px;
+      color: whitesmoke;
+    }
+  }
+}
