@@ -55,6 +55,12 @@ interface IUpdateTodoAction {
   payload: ITodo;
 }
 
+export const UPDATE_TODO_STATUS = "UPDATE_TODO_STATUS";
+interface IUpdateTodoStatusAction {
+  type: typeof UPDATE_TODO_STATUS;
+  payload: number;
+}
+
 export const CLEAR_DATA = "CLEAR_DATA";
 interface IClearDataAction {
   type: typeof CLEAR_DATA;
@@ -66,4 +72,5 @@ export type SetDataTypes =
   | ITodosDataAction
   | IAddNewTodoAction
   | IDeleteTodoAction
-  | IUpdateTodoAction;
+  | IUpdateTodoAction
+  | IUpdateTodoStatusAction;
