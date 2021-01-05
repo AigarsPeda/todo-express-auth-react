@@ -60,6 +60,32 @@ export const newTodo = async (
   return response;
 };
 
+export const changeTodoDescription = async (
+  description: string,
+  tags: string[],
+  token: string,
+  id: string
+) => {
+  // "/todo/:id"
+
+  const rawResponse = await fetch(`http://localhost:8000/todo/${id}`, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      description: description,
+      tags: tags
+    })
+  });
+
+  const response: ITodo = await rawResponse.json();
+  // console.log("response: ", response);
+  return response;
+};
+
 export const removeTodo = async (id: number, token: string) => {
   const rawResponse = await fetch(`http://localhost:8000/todos/${id}`, {
     method: "DELETE",
