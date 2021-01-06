@@ -1,21 +1,33 @@
-import express from "express";
-import cors from "cors";
 import argon2 from "argon2";
-import jwt from "jsonwebtoken";
+import cors from "cors";
 import dotenv from "dotenv";
-import { poll } from "./db";
-import { validLoginUser, validSignupUser } from "./utils/validUser";
-import { RequestWithUser } from "./types";
+import express from "express";
+import jwt from "jsonwebtoken";
+import multer from "multer";
 import { verifyToken } from "./auth/verifyToken";
-
-// import multer from "multer";
-
-dotenv.config();
+import { poll } from "./db";
+import { RequestWithUser } from "./types";
+import { validLoginUser, validSignupUser } from "./utils/validUser";
+import { Storage } from "@google-cloud/storage";
+import path from "path";
+import { uploadImage } from "./utils/uploadImage";
+// import { v4 } from "uuid";
 
 const PORT = 8000;
 const app = express();
+dotenv.config();
+
+const gc = new Storage({
+  keyFilename: path.join(__dirname, "../key.json"),
+  projectId: "todo-node-1"
+});
+
+// gc.getBuckets().then((x) => console.log(x));
+const todoAvatars = gc.bucket("todo-avatars");
 
 // MIDDLEWARE //
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage }).single("image");
 app.use(cors() as any);
 app.use(express.json()); // req.body
 
@@ -112,38 +124,69 @@ app.post("/login", async (req, res) => {
 });
 
 // upload image
-app.post("/user/:id", verifyToken, async (req: RequestWithUser, res) => {
-  try {
-    if (req.user) {
-      const { user } = req.user;
-      // const { id } = req.params;
+app.post(
+  "/user/:id",
+  verifyToken,
+  upload,
+  async (req: RequestWithUser, res) => {
+    // req.file is available because off multer  middleware
+    try {
+      if (req.user) {
+        const { user } = req.user;
+        // const { id } = req.params;
 
-      // try to find and update entry
-      // const foundTodo = await poll.query(
-      //   "UPDATE todos SET description = $1, tags = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
-      //   [description, tags, parseInt(id), user.user_id]
-      // );
+        // try to find and update entry
+        // const foundTodo = await poll.query(
+        //   "UPDATE todos SET description = $1, tags = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
+        //   [description, tags, parseInt(id), user.user_id]
+        // );
 
-      // console.log(foundTodo.rows[0]);
+        // console.log(foundTodo.rows[0]);
 
-      // check if something was updated
-      // if (foundTodo.rowCount) {
-      //   res.status(200).json(foundTodo.rows[0]);
-      // } else {
-      //   res.status(401).json({ error: "forbidden" });
-      // }
+        // check if something was updated
+        // if (foundTodo.rowCount) {
+        //   res.status(200).json(foundTodo.rows[0]);
+        // } else {
+        //   res.status(401).json({ error: "forbidden" });
+        // }
+        //const blob = todoAvatars.file(req.file.originalname);
 
-      // console.log(req.file);
+        // const stream = blob.createWriteStream({
+        //   resumable: false,
+        //   gzip: true,
+        //   metadata: {
+        //   contentType: req.file.mimetype
+        // }
+        //});
 
-      return res.status(200).json({ user });
-    } else {
-      return res.status(403).json({ error: "no user" });
+        // const blob = bucket.file(req.file.originalname);
+        // const blobStream = blob.createWriteStream({
+        //   metadata: {
+        //     contentType: req.file.mimetype
+        //   }
+        // });
+
+        // stream.on("error", (err) => console.log("ERROR UPLOADING: ", err));
+        // stream.on("finish", () => {
+        //   const publicUrl = `https://storage.googleapis.com/${todoAvatars.name}/${blob.name}`;
+        //   console.log(publicUrl);
+        // });
+
+        const url = await uploadImage(req.file, todoAvatars);
+        console.log("URL: ", url);
+
+        console.log(req.file);
+
+        return res.status(200).json({ user });
+      } else {
+        return res.status(403).json({ error: "no user" });
+      }
+    } catch (error) {
+      console.error(error.message);
+      return res.status(503).json({ error: "service unavailable" });
     }
-  } catch (error) {
-    console.error(error.message);
-    return res.status(503).json({ error: "service unavailable" });
   }
-});
+);
 
 // get all user todos
 app.get("/todos", verifyToken, async (req: RequestWithUser, res) => {
