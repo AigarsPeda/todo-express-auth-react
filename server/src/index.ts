@@ -104,6 +104,40 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// upload image
+app.post("/user/:id", verifyToken, async (req: RequestWithUser, res) => {
+  try {
+    if (req.user) {
+      const { user } = req.user;
+      // const { id } = req.params;
+
+      // try to find and update entry
+      // const foundTodo = await poll.query(
+      //   "UPDATE todos SET description = $1, tags = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
+      //   [description, tags, parseInt(id), user.user_id]
+      // );
+
+      // console.log(foundTodo.rows[0]);
+
+      // check if something was updated
+      // if (foundTodo.rowCount) {
+      //   res.status(200).json(foundTodo.rows[0]);
+      // } else {
+      //   res.status(401).json({ error: "forbidden" });
+      // }
+
+      // console.log(req.file);
+
+      return res.status(200).json({ user });
+    } else {
+      return res.status(403).json({ error: "no user" });
+    }
+  } catch (error) {
+    console.error(error.message);
+    return res.status(503).json({ error: "service unavailable" });
+  }
+});
+
 // get all user todos
 app.get("/todos", verifyToken, async (req: RequestWithUser, res) => {
   try {
