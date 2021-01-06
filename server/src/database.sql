@@ -28,9 +28,15 @@ CREATE TABLE users (
 	password VARCHAR ( 255 ) NOT NULL,
 	email VARCHAR ( 255 ) UNIQUE NOT NULL,
 	created_on TIMESTAMP NOT NULL,
-  last_login TIMESTAMP 
+  last_login TIMESTAMP
 );
 
+alter table users add image varchar(255);
+
+
+alter table users add image bytea;
+
+ --`image` varchar(255)
 
 -- TO NOT FORGET
 -- const foundTodo = await poll.query(
