@@ -2,11 +2,15 @@ import express from "express";
 import cors from "cors";
 import argon2 from "argon2";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 import { poll } from "./db";
 import { validLoginUser, validSignupUser } from "./utils/validUser";
 import { RequestWithUser } from "./types";
 import { verifyToken } from "./auth/verifyToken";
-import { SECRET_KEY } from "./constance";
+
+// import multer from "multer";
+
+dotenv.config();
 
 const PORT = 8000;
 const app = express();
@@ -44,7 +48,7 @@ app.post("/signup", async (req, res) => {
 
     // sign jsonwebtoken to save it in front
     // end identify user later
-    const token = jwt.sign({ user: newUser.rows[0] }, SECRET_KEY);
+    const token = jwt.sign({ user: newUser.rows[0] }, process.env.SECRET_KEY!);
 
     // returning user and token
     return res.status(200).json({
@@ -83,7 +87,10 @@ app.post("/login", async (req, res) => {
     if (await argon2.verify(loginUser.rows[0].password, password)) {
       // sign jsonwebtoken to save it in front
       // end identify user later
-      const token = jwt.sign({ user: loginUser.rows[0] }, SECRET_KEY);
+      const token = jwt.sign(
+        { user: loginUser.rows[0] },
+        process.env.SECRET_KEY!
+      );
 
       // delete password from user so it
       // would not be in response

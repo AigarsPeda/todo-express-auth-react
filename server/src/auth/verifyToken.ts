@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { User } from "../types";
-import { SECRET_KEY } from "../constance";
 
 export const verifyToken = (
   req: Request,
@@ -20,7 +19,7 @@ export const verifyToken = (
     // get token from array
     const token = bearerToken[1];
     try {
-      const user = jwt.verify(token, SECRET_KEY) as User;
+      const user = jwt.verify(token, process.env.SECRET_KEY!) as User;
       // @ts-ignore
       req.user = user;
 
