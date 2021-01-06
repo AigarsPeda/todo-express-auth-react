@@ -9,6 +9,7 @@ export type IUser = {
   last_login: null | string;
   user_id: number;
   username: string;
+  // image?: any;
 };
 
 export type IUserLogIn = {
