@@ -12,6 +12,7 @@ import { singInUser, singUpUser } from "../../services/auth.services";
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "../reducers";
 import { Action } from "redux";
+import { getUsersTodos } from "./todos";
 
 // ThunkAction<any, RootState, AuthenticateActionTypes | SetErrorActionTypes, Action<string>>
 
@@ -61,6 +62,7 @@ export const logInUser = (userData: IUserLogIn): AppThunk => async (
       type: SET_USER_DATA,
       payload: user
     });
+    // getUsersTodos(token);
   } catch (error) {
     console.log(error);
   }
