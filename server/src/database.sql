@@ -28,10 +28,14 @@ CREATE TABLE users (
 	password VARCHAR ( 255 ) NOT NULL,
 	email VARCHAR ( 255 ) UNIQUE NOT NULL,
 	created_on TIMESTAMP NOT NULL,
-  last_login TIMESTAMP
+  last_login TIMESTAMP,
+  user_image varchar(255) DEFAULT 'https://storage.googleapis.com/todo-avatars/default_profile.jpeg'
 );
 
-alter table users add image varchar(255);
+ALTER TABLE users
+RENAME COLUMN user_image TO user_image_url;
+
+alter table users add user_image varchar(255);
 
 
 alter table users add image bytea;
