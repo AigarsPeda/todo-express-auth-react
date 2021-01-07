@@ -54,7 +54,7 @@ app.post("/signup", async (req, res) => {
     // without password to return it later
     // with response
     const newUser = await poll.query(
-      "INSERT INTO users (username, email, password,created_on) VALUES($1, $2, $3, $4) RETURNING username, email, created_on, last_login, user_id",
+      "INSERT INTO users (username, email, password,created_on) VALUES($1, $2, $3, $4) RETURNING username, email, created_on, last_login, user_id, user_image_url",
       [username.toLowerCase(), email.toLowerCase(), hashPassword, created_on]
     );
 
@@ -125,7 +125,7 @@ app.post("/login", async (req, res) => {
 
 // upload image
 app.post(
-  "/user/:id",
+  "/user/image",
   verifyToken,
   upload,
   async (req: RequestWithUser, res) => {
@@ -153,12 +153,18 @@ app.post(
         if (
           req.file.mimetype === "image/webp" ||
           req.file.mimetype === "image/png" ||
-          req.file.mimetype !== "image/jpeg"
+          req.file.mimetype === "image/jpeg" ||
+          req.file.mimetype === "image/jpg"
         ) {
-          console.log(user);
+          console.log(req.file);
           // req.file.filename = "yes";
           const url = await uploadImage(req.file, todoAvatars);
-          return res.status(200).json({ url });
+
+          const foundUser = await poll.query(
+            "UPDATE users SET user_image = $1 WHERE user_id = $2 RETURNING *",
+            [url, user.user_id]
+          );
+          return res.status(200).json(foundUser.rows[0]);
         } else {
           return res.status(403).json({
             error: "Wrong image format. Acceptable formats WEBP PNG JPEG"
