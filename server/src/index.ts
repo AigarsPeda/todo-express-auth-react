@@ -11,7 +11,6 @@ import { validLoginUser, validSignupUser } from "./utils/validUser";
 import { Storage } from "@google-cloud/storage";
 import path from "path";
 import { uploadImage } from "./utils/uploadImage";
-// import { v4 } from "uuid";
 
 const PORT = 8000;
 const app = express();
@@ -28,6 +27,7 @@ const todoAvatars = gc.bucket("todo-avatars");
 // MIDDLEWARE //
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage }).single("image");
+
 app.use(cors() as any);
 app.use(express.json()); // req.body
 
@@ -149,35 +149,21 @@ app.post(
         // } else {
         //   res.status(401).json({ error: "forbidden" });
         // }
-        //const blob = todoAvatars.file(req.file.originalname);
-
-        // const stream = blob.createWriteStream({
-        //   resumable: false,
-        //   gzip: true,
-        //   metadata: {
-        //   contentType: req.file.mimetype
-        // }
-        //});
-
-        // const blob = bucket.file(req.file.originalname);
-        // const blobStream = blob.createWriteStream({
-        //   metadata: {
-        //     contentType: req.file.mimetype
-        //   }
-        // });
-
-        // stream.on("error", (err) => console.log("ERROR UPLOADING: ", err));
-        // stream.on("finish", () => {
-        //   const publicUrl = `https://storage.googleapis.com/${todoAvatars.name}/${blob.name}`;
-        //   console.log(publicUrl);
-        // });
-
-        const url = await uploadImage(req.file, todoAvatars);
-        console.log("URL: ", url);
-
         console.log(req.file);
-
-        return res.status(200).json({ user });
+        if (
+          req.file.mimetype === "image/webp" ||
+          req.file.mimetype === "image/png" ||
+          req.file.mimetype !== "image/jpeg"
+        ) {
+          console.log(user);
+          // req.file.filename = "yes";
+          const url = await uploadImage(req.file, todoAvatars);
+          return res.status(200).json({ url });
+        } else {
+          return res.status(403).json({
+            error: "Wrong image format. Acceptable formats WEBP PNG JPEG"
+          });
+        }
       } else {
         return res.status(403).json({ error: "no user" });
       }
