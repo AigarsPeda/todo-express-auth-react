@@ -7,7 +7,10 @@ export const uploadImage = (file: Express.Multer.File, bucket: Bucket) =>
     // /.*(?=\.)/g
     // .*(?=\.[^.]*$)
     // /.*(?=\.)/
-    const blob = bucket.file(originalname.replace(/.*(?=\.)/, "YES"));
+
+    // bucket.getFiles().then((files) => console.log(files));
+
+    const blob = bucket.file(originalname.replace(/.*(?=\.)/, "aigars"));
     const blobStream = blob.createWriteStream({
       resumable: false
     });
