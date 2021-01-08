@@ -1,17 +1,23 @@
+import { Storage } from "@google-cloud/storage";
 import argon2 from "argon2";
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import jwt from "jsonwebtoken";
 import multer from "multer";
-
+import path from "path";
 import { verifyToken } from "./auth/verifyToken";
 import { poll } from "./db";
 import { RequestWithUser } from "./types";
-import { validLoginUser, validSignupUser } from "./utils/validUser";
-import { Storage } from "@google-cloud/storage";
-import path from "path";
 import { uploadImage } from "./utils/uploadImage";
+import { validLoginUser, validSignupUser } from "./utils/validUser";
+
+const SUPPORTED_IMAGE_TYPES = [
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/jpg"
+];
 
 const PORT = 8000;
 const app = express();
@@ -135,14 +141,9 @@ app.post(
       if (req.user) {
         const { user } = req.user;
 
-        if (
-          req.file.mimetype === "image/webp" ||
-          req.file.mimetype === "image/png" ||
-          req.file.mimetype === "image/jpeg" ||
-          req.file.mimetype === "image/jpg"
-        ) {
-          console.log(req.file);
-          const url = await uploadImage(req.file, todoAvatars);
+        if (req.file && SUPPORTED_IMAGE_TYPES.includes(req.file.mimetype)) {
+          // console.log(req.file);
+          const url = await uploadImage(req.file, todoAvatars, user.username);
 
           const foundUser = await poll.query(
             "UPDATE users SET user_image_url = $1 WHERE user_id = $2 RETURNING *",
@@ -154,7 +155,7 @@ app.post(
           return res.status(200).json(foundUser.rows[0]);
         } else {
           return res.status(403).json({
-            error: "Wrong image format. Acceptable formats WEBP PNG JPEG"
+            error: "Wrong image format. Acceptable formats WEBP PNG JPEG JPG"
           });
         }
       } else {
@@ -205,19 +206,6 @@ app.post("/todos", verifyToken, async (req: RequestWithUser, res) => {
     console.error(error.message);
   }
 });
-
-// get a todo
-// app.get("/todos/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const todo = await poll.query("SELECT * FROM todo WHERE todo_id  = $1", [
-//       id
-//     ]);
-//     res.json(todo.rows[0]);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
 
 // update users todo
 app.put("/todo/:id", verifyToken, async (req: RequestWithUser, res) => {
