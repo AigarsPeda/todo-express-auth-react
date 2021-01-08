@@ -1,16 +1,17 @@
 import { Bucket } from "@google-cloud/storage";
 // import { v4 } from "uuid";
 
-export const uploadImage = (file: Express.Multer.File, bucket: Bucket) =>
+export const uploadImage = (
+  file: Express.Multer.File,
+  bucket: Bucket,
+  fileName: string
+) =>
   new Promise((resolve, reject) => {
     const { originalname, buffer } = file;
-    // /.*(?=\.)/g
-    // .*(?=\.[^.]*$)
-    // /.*(?=\.)/
-
-    // bucket.getFiles().then((files) => console.log(files));
-
-    const blob = bucket.file(originalname.replace(/.*(?=\.)/, "aigars"));
+    const fileNameWithoutWhiteSpaces = fileName.replace(" ", "_");
+    const blob = bucket.file(
+      originalname.replace(/.*(?=\.)/, fileNameWithoutWhiteSpaces)
+    );
     const blobStream = blob.createWriteStream({
       resumable: false
     });
