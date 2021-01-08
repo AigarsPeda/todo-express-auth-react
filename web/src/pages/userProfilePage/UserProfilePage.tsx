@@ -10,18 +10,23 @@ const UserProfilePage: React.FC<Props> = (props) => {
   const { user } = props;
   return (
     <div className="user-profile-page">
-      <label className="user-name">
-        Username:
-        <p>{firstLetterUpper(user.username)}</p>
-      </label>
-      <label>
-        Created:
-        <p>{dateFormatted(user.created_on)}</p>
-      </label>
-      <label>
-        Email:
-        <p>{user.email}</p>
-      </label>
+      <div className="user-profile-page-info">
+        <label className="user-name">
+          Username:
+          <p>{firstLetterUpper(user.username)}</p>
+        </label>
+        <label>
+          Created:
+          <p>{dateFormatted(user.created_on)}</p>
+        </label>
+        <label>
+          Email:
+          <p>{user.email}</p>
+        </label>
+      </div>
+      <div className="user-profile-page-image">
+        <img src={user.user_image_url} />
+      </div>
     </div>
   );
 };
