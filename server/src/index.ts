@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import express from "express";
 import jwt from "jsonwebtoken";
 import multer from "multer";
+
 import { verifyToken } from "./auth/verifyToken";
 import { poll } from "./db";
 import { RequestWithUser } from "./types";
@@ -133,23 +134,7 @@ app.post(
     try {
       if (req.user) {
         const { user } = req.user;
-        // const { id } = req.params;
 
-        // try to find and update entry
-        // const foundTodo = await poll.query(
-        //   "UPDATE todos SET description = $1, tags = $2 WHERE id = $3 AND user_id = $4 RETURNING *",
-        //   [description, tags, parseInt(id), user.user_id]
-        // );
-
-        // console.log(foundTodo.rows[0]);
-
-        // check if something was updated
-        // if (foundTodo.rowCount) {
-        //   res.status(200).json(foundTodo.rows[0]);
-        // } else {
-        //   res.status(401).json({ error: "forbidden" });
-        // }
-        console.log(req.file);
         if (
           req.file.mimetype === "image/webp" ||
           req.file.mimetype === "image/png" ||
@@ -157,13 +142,15 @@ app.post(
           req.file.mimetype === "image/jpg"
         ) {
           console.log(req.file);
-          // req.file.filename = "yes";
           const url = await uploadImage(req.file, todoAvatars);
 
           const foundUser = await poll.query(
-            "UPDATE users SET user_image = $1 WHERE user_id = $2 RETURNING *",
+            "UPDATE users SET user_image_url = $1 WHERE user_id = $2 RETURNING *",
             [url, user.user_id]
           );
+
+          // TODO: do something if foundUser undefine
+
           return res.status(200).json(foundUser.rows[0]);
         } else {
           return res.status(403).json({
