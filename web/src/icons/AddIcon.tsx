@@ -14,7 +14,6 @@ const AddIcon = (props: React.SVGProps<SVGSVGElement>) => {
     >
       <path
         d="M590.393 131.407v919.46M129.436 595.157h919.403"
-        fill="none"
         stroke="#fff"
         strokeWidth={133.3383758}
       />
