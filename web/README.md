@@ -28,4 +28,5 @@ npm run build
 
 ## Images
 
-![screenshots](./screenshot/1.gif)
+![screenshots](./screenshots/1.gif)
+<img src="./screenshots/1.gif" width="200" height="400"/>
