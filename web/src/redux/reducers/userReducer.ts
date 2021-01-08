@@ -12,7 +12,8 @@ const initialState: IUserInitialState = {
     email: "",
     last_login: null,
     user_id: 0,
-    username: ""
+    username: "",
+    user_image_url: ""
   }
 };
 
