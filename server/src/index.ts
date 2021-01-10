@@ -146,7 +146,7 @@ app.post(
           const url = await uploadImage(req.file, todoAvatars, user.username);
 
           const foundUser = await poll.query(
-            "UPDATE users SET user_image_url = $1 WHERE user_id = $2 RETURNING *",
+            "UPDATE users SET user_image_url = $1 WHERE user_id = $2 RETURNING user_image_url",
             [url, user.user_id]
           );
 
