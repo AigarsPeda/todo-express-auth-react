@@ -15,7 +15,7 @@ export type AuthenticateActionTypes =
   | IAuthenticateUserAction
   | IUnauthenticatedUserAction;
 
-// USER
+// AUTH
 export const SET_USER_DATA = "SET_USER_DATA";
 interface ISetUserAction {
   type: typeof SET_USER_DATA;
@@ -74,3 +74,12 @@ export type SetDataTypes =
   | IDeleteTodoAction
   | IUpdateTodoAction
   | IUpdateTodoStatusAction;
+
+// USER
+export const SET_USER_PROFILE_IMAGE = "SET_USER_PROFILE_IMAGE";
+interface ISetUserProfileImageAction {
+  type: typeof SET_USER_PROFILE_IMAGE;
+  payload: IUser;
+}
+
+export type SetUserTypes = ISetUserProfileImageAction;
