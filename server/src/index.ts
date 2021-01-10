@@ -142,7 +142,6 @@ app.post(
         const { user } = req.user;
 
         if (req.file && SUPPORTED_IMAGE_TYPES.includes(req.file.mimetype)) {
-          // console.log(req.file);
           const url = await uploadImage(req.file, todoAvatars, user.username);
 
           const foundUser = await poll.query(
