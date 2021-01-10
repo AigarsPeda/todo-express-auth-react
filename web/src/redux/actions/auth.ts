@@ -12,7 +12,7 @@ import { singInUser, singUpUser } from "../../services/auth.services";
 import { ThunkAction } from "redux-thunk";
 import { RootState } from "../reducers";
 import { Action } from "redux";
-import { getUsersTodos } from "./todos";
+// import { getUsersTodos } from "./todos";
 
 // ThunkAction<any, RootState, AuthenticateActionTypes | SetErrorActionTypes, Action<string>>
 
