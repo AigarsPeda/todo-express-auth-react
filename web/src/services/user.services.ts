@@ -14,8 +14,6 @@ export const updateImage = async (file: File, token: string) => {
     body: formData
   });
 
-  console.log("nu?");
-
   const response: string = await rawResponse.json();
   return response;
 };
