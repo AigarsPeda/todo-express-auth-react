@@ -1,16 +1,14 @@
 import { combineReducers } from "redux";
-
-import storage from "redux-persist/lib/storage";
 import { persistReducer } from "redux-persist";
-
-import authReducer, { IAuthInitialState } from "./authReducer";
-import userReducer, { IUserInitialState } from "./userReducer";
-import todosReducer, { ITodosInitialState } from "./todosReducer";
+import storage from "redux-persist/lib/storage";
+import authReducer, { IAuthState } from "./authReducer";
+import todosReducer, { ITodosState } from "./todosReducer";
+import userReducer, { IUserState } from "./userReducer";
 
 interface IDefaultState {
-  auth: IAuthInitialState;
-  user: IUserInitialState;
-  todos: ITodosInitialState;
+  auth: IAuthState;
+  user: IUserState;
+  todos: ITodosState;
 }
 
 const persistConfig = {
@@ -24,12 +22,8 @@ const appReducers = combineReducers({
   todos: todosReducer
 });
 
-// TO DO - WHAT IS THOSE ANY ?
 const rootReducers = (state: IDefaultState | undefined, action: any) => {
-  let newState = state;
-  // if (action.type === LOGOUT) {
-  //   newState = undefined;
-  // }
+  const newState = state;
 
   return appReducers(newState, action);
 };
