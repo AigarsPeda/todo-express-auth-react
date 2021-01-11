@@ -38,11 +38,11 @@ const UserProfilePage: React.FC<Props> = (props) => {
     }
   };
 
-  // submit image to db
   const handleImageSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    if (!selectedFile) return;
     e.preventDefault();
-    console.log("click");
+    if (!selectedFile) return;
+
+    // submit image to db
     updateUserProfilePicture(selectedFile, token);
     setSelectedFile(undefined);
   };
