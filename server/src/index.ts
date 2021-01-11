@@ -149,9 +149,11 @@ app.post(
             [url, user.user_id]
           );
 
+          // console.log(foundUser.rows[0].user_image_url);
+
           // TODO: do something if foundUser undefine
 
-          return res.status(200).json(foundUser.rows[0]);
+          return res.status(200).json(foundUser.rows[0].user_image_url);
         } else {
           return res.status(403).json({
             error: "Wrong image format. Acceptable formats WEBP PNG JPEG JPG"
