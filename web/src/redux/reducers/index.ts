@@ -30,6 +30,7 @@ const rootReducers = (state: IDefaultState | undefined, action: any) => {
   // if (action.type === LOGOUT) {
   //   newState = undefined;
   // }
+
   return appReducers(newState, action);
 };
 
