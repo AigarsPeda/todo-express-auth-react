@@ -79,7 +79,7 @@ export type SetDataTypes =
 export const SET_USER_PROFILE_IMAGE = "SET_USER_PROFILE_IMAGE";
 interface ISetUserProfileImageAction {
   type: typeof SET_USER_PROFILE_IMAGE;
-  payload: IUser;
+  payload: string;
 }
 
 export type SetUserTypes = ISetUserProfileImageAction;
