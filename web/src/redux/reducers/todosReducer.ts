@@ -9,16 +9,16 @@ import {
   UPDATE_TODO_STATUS
 } from "../types";
 
-export interface ITodosInitialState {
+export interface ITodosState {
   todos: ITodo[];
 }
 
 // Initial State
-const initialState: ITodosInitialState = {
+const initialState: ITodosState = {
   todos: []
 };
 
-export default (state = initialState, action: SetDataTypes) => {
+export default (state = initialState, action: SetDataTypes): ITodosState => {
   switch (action.type) {
     case SET_TODOS_DATA:
       return {
