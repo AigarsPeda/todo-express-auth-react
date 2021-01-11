@@ -7,12 +7,12 @@ import {
   SetUserTypes
 } from "../types";
 
-export interface IUserInitialState {
+export interface IUserState {
   user: IUser;
 }
 
 // Initial State
-const initialState: IUserInitialState = {
+const initialState: IUserState = {
   user: {
     created_on: "",
     email: "",
@@ -26,7 +26,7 @@ const initialState: IUserInitialState = {
 export default (
   state = initialState,
   action: UserActionTypes | SetUserTypes
-) => {
+): IUserState => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
