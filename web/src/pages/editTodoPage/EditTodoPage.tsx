@@ -71,9 +71,6 @@ const EditTodoPage: React.FC<Props> = (props) => {
 
   return (
     <div className="edit-todo-page">
-      {console.log(todo.tags)}
-      {console.log(todo.description)}
-      {console.log(token)}
       <input
         type="text"
         name="description"
@@ -97,9 +94,6 @@ const EditTodoPage: React.FC<Props> = (props) => {
         })}
       </div>
       <button onClick={handleSubmit}>Save</button>
-      {/* <button onClick={() => history.goBack()}>
-        <BackIcon /> Back
-      </button> */}
     </div>
   );
 };
