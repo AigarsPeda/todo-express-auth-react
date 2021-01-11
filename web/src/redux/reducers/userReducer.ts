@@ -1,5 +1,11 @@
 import { IUser } from "./../../types";
-import { CLEAR_USER_DATA, SET_USER_DATA, UserActionTypes } from "../types";
+import {
+  CLEAR_USER_DATA,
+  SET_USER_DATA,
+  SET_USER_PROFILE_IMAGE,
+  UserActionTypes,
+  SetUserTypes
+} from "../types";
 
 export interface IUserInitialState {
   user: IUser;
@@ -17,12 +23,24 @@ const initialState: IUserInitialState = {
   }
 };
 
-export default (state = initialState, action: UserActionTypes) => {
+export default (
+  state = initialState,
+  action: UserActionTypes | SetUserTypes
+) => {
   switch (action.type) {
     case SET_USER_DATA:
       return {
         ...state,
         user: action.payload
+      };
+
+    case SET_USER_PROFILE_IMAGE:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          user_image_url: action.payload
+        }
       };
 
     case CLEAR_USER_DATA: {
