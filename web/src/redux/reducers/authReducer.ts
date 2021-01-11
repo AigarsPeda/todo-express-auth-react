@@ -5,18 +5,21 @@ import {
   UNAUTHENTICATED_USER
 } from "../types";
 
-export interface IAuthInitialState {
+export interface IAuthState {
   isAuthenticated: boolean;
   token: string;
 }
 
 // Initial State
-const initialState: IAuthInitialState = {
+const initialState: IAuthState = {
   isAuthenticated: false,
   token: ""
 };
 
-export default (state = initialState, action: AuthenticateActionTypes) => {
+export default (
+  state = initialState,
+  action: AuthenticateActionTypes
+): IAuthState => {
   switch (action.type) {
     case AUTHENTICATE_USER:
       console.log("AUTH TOKEN: ", initialState);
