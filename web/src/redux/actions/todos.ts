@@ -1,16 +1,5 @@
-import { ITodo } from "./../../types";
-import {
-  SET_TODOS_DATA,
-  SetDataTypes,
-  UPDATE_TODO,
-  ADD_NEW_TODO,
-  DELETE_TODO,
-  UPDATE_TODO_STATUS
-} from "./../types";
-
-import { ThunkAction } from "redux-thunk";
-import { RootState } from "../reducers";
 import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
 import {
   changeStatus,
   changeTodoDescription,
@@ -18,8 +7,16 @@ import {
   newTodo,
   removeTodo
 } from "../../services/todo.services";
-
-// ThunkAction<any, RootState, AuthenticateActionTypes | SetErrorActionTypes, Action<string>>
+import { RootState } from "../reducers";
+import { ITodo } from "./../../types";
+import {
+  ADD_NEW_TODO,
+  DELETE_TODO,
+  SetDataTypes,
+  SET_TODOS_DATA,
+  UPDATE_TODO,
+  UPDATE_TODO_STATUS
+} from "./../types";
 
 type AppThunk<ReturnType = any> = ThunkAction<
   ReturnType,
