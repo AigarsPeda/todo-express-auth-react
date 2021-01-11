@@ -1,3 +1,8 @@
+import { Action } from "redux";
+import { ThunkAction } from "redux-thunk";
+import { singInUser, singUpUser } from "../../services/auth.services";
+import { RootState } from "../reducers";
+import { AuthenticateActionTypes, AUTHENTICATE_USER } from "../types";
 import { IUserLogIn, IUserSignUp } from "./../../types";
 import {
   CLEAR_DATA,
@@ -6,15 +11,6 @@ import {
   UNAUTHENTICATED_USER,
   UserActionTypes
 } from "./../types";
-import { AUTHENTICATE_USER, AuthenticateActionTypes } from "../types";
-import { singInUser, singUpUser } from "../../services/auth.services";
-
-import { ThunkAction } from "redux-thunk";
-import { RootState } from "../reducers";
-import { Action } from "redux";
-// import { getUsersTodos } from "./todos";
-
-// ThunkAction<any, RootState, AuthenticateActionTypes | SetErrorActionTypes, Action<string>>
 
 type AppThunk<ReturnType = any> = ThunkAction<
   ReturnType,
@@ -31,7 +27,6 @@ export const signUpUser = (userData: IUserSignUp): AppThunk => async (
     const response = await singUpUser(userData);
     console.log("Created User: ", response);
     const { token, user } = response;
-    // authToken(token);
     dispatch({
       type: AUTHENTICATE_USER,
       payload: token
@@ -53,7 +48,6 @@ export const logInUser = (userData: IUserLogIn): AppThunk => async (
     const response = await singInUser(userData);
     console.log("Created User: ", response);
     const { token, user } = response;
-    // authToken(token);
     dispatch({
       type: AUTHENTICATE_USER,
       payload: token
@@ -62,7 +56,6 @@ export const logInUser = (userData: IUserLogIn): AppThunk => async (
       type: SET_USER_DATA,
       payload: user
     });
-    // getUsersTodos(token);
   } catch (error) {
     console.log(error);
   }
