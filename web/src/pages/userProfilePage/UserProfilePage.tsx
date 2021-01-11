@@ -51,6 +51,7 @@ const UserProfilePage: React.FC<Props> = (props) => {
     e.preventDefault();
     console.log("click");
     updateUserProfilePicture(selectedFile, token);
+    setSelectedFile(undefined);
   };
 
   return (
