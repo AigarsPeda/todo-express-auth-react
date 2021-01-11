@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { firstLetterUpper } from "../../helpers/firstLetterUpper";
 import { addNewTodo } from "../../redux/actions/todos";
 import { RootState } from "../../redux/reducers";
-
 import AddIcon from "../../icons/AddIcon";
 
 type Props = ReturnType<typeof mapStateToProps> & typeof mapDispatchToProps;
