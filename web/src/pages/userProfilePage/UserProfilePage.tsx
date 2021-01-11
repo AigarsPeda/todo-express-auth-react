@@ -27,25 +27,18 @@ const UserProfilePage: React.FC<Props> = (props) => {
     }
     const selected = e.target.files[0];
 
-    // console.log(selected);
-    // if (e.target.files && e.target.files[0]) {
-    //   setSelectedImage(URL.createObjectURL(e.target.files[0]));
-    // }
-
     if (selected && SUPPORTED_IMAGE_TYPES.includes(selected.type)) {
       // displaying selected image
       setSelectedImage(URL.createObjectURL(selected));
       setSelectedFile(selected);
       setError(undefined);
-      // updateUserProfilePicture(selected, token);
     } else {
       setSelectedFile(undefined);
       setError("Please select an image file!");
     }
-
-    // TODO: if submitted find in state and replace it
   };
 
+  // submit image to db
   const handleImageSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     if (!selectedFile) return;
     e.preventDefault();
